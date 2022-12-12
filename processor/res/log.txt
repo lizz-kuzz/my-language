@@ -1,0 +1,52 @@
+
+stack_ctor_() at stack/stack.cpp(97)
+Stack[0x7ffd646444a0] (ok) "stk" at graph_dump() at tree/tree_func.cpp(77) 
+  size = 0
+  cappacity = 5
+  data [0x562660ecbdc0]
+  {
+      *[0] = 0 (POIZON)
+      *[1] = 0 (POIZON)
+      *[2] = 0 (POIZON)
+      *[3] = 0 (POIZON)
+      *[4] = 0 (POIZON)
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffd646444a0] (ok) "stk" at graph_dump() at tree/tree_func.cpp(77) 
+  size = 1
+  cappacity = 5
+  data [0x562660ecbdc0]
+  {
+      *[0] = 1626118864
+      *[1] = 0 (POIZON)
+      *[2] = 0 (POIZON)
+      *[3] = 0 (POIZON)
+      *[4] = 0 (POIZON)
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffd646444a0] (ok) "stk" at graph_dump() at tree/tree_func.cpp(77) 
+  size = 2
+  cappacity = 5
+  data [0x562660ecbdc0]
+  {
+      *[0] = 1626118864
+      *[1] = 1626118928
+      *[2] = 0 (POIZON)
+      *[3] = 0 (POIZON)
+      *[4] = 0 (POIZON)
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffd646444a0] (ok) "stk" at graph_dump() at tree/tree_func.cpp(77) 
+  size = 3
+  cappacity = 5
+  data [0x562660ecbdc0]
+  {
+      *[0] = 1626118864
+      *[1] = 1626118928
+      *[2] = 1626118992
+      *[3] = 0 (POIZON)
+      *[4] = 0 (POIZON)
+  }
