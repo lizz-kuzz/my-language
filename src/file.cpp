@@ -32,10 +32,11 @@ char *read_file(const char *TEXT, char *text_buf) {
     assert(text_buf != nullptr && "null pointer");
 
     fread(text_buf, sizeof(char), SYMBOLS, file_input);
-    // printf("%s\n", text_buf);
 
     fclose(file_input);
     text_buf = program_text_normalize(text_buf, SYMBOLS);
+    // printf("%s\n", text_buf);
+    printf("%s\n", text_buf);
     return text_buf;
 
 }
@@ -72,8 +73,11 @@ char *program_text_normalize(char *text, int SYMBOLS)  {
     
     for (; *text != '\0'; point++, text++)  { 
 
-        if (*text == '\n')
+        if (*text == '\n') {
             text++;
+    // printf("{%s}\n", text);
+
+        }
 
         while (*text == ' '  && *text != '\0') 
             text++;

@@ -66,6 +66,8 @@ Node *get_grammar(Tokenizer *tokens);
 
 Node *get_type(Tokenizer *tokens);
 
+Node *ger_var_declaration(Tokenizer *tokens);
+
 Node *get_assignment(Tokenizer *tokens);
 
 Node *get_add_sub(Tokenizer *tokens);

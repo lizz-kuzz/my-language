@@ -22,7 +22,7 @@ void ctor_tree(const char *FILE_INPUT, Tree *tree) {
     Tokenizer tokens = {};
 
     tokenizer_ctor(&tokens, point_text_buf);
-
+    printf("%d\n", tokens.capacity);
     for (int i = 0; i < tokens.capacity; i++) {
         printf("%d [\"%s\"] {%d} ", tokens.array[i].type, tokens.array[i].elem, tokens.array[i].oper);
     }
@@ -134,31 +134,77 @@ Node *get_grammar(Tokenizer *tokens) {
 
     Node *node = get_type(tokens);
 
-    assert(tokens->size == tokens->capacity);
+    // assert(tokens->size == tokens->capacity);
 
     return node;
 }
 
-
+// Node *get_connect(Tokenizer *to)
 Node *get_type(Tokenizer *tokens) {
     
-    Node *node = create_node(TP_OPERATOR, OP_CONNECT, NULL, NULL);
+    Node *node = NULL;
+    Node *node_l = NULL; 
 
-    if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_VAR) || TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))) {
-        node->right = get_assignment(tokens);
+    if (TOKEN_TYPE(TP_VAR) || ((TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))))) {
+        node_l = get_assignment(tokens);
+                // присваивание 
+    } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
+        node_l = ger_var_declaration(tokens);
+                // декларация переменных 
     } 
-    // else if (TOKEN_TYPE(TP_OPERATOR)) {
-    //     node = get_add_sub(tokens);
-    // }
 
-    assert(node->right != NULL && "null node in recursive despend get_type");
+    for (int i = tokens->size; i < tokens->capacity; i++) {
+        printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    }
+    printf("\n");
+
+    // node_l = create_node(TP_OPERATOR, OP_CONNECT, node_l, node);
+
+    // dump_tree(node);
+// декларация функций
+    
+
+    // assert(node_l && "null node in recursive despend get_type");
+
+    return node_l;
+
+}
+
+Node *ger_var_declaration(Tokenizer *tokens) {
+
+    Node *node_l = NULL;
+    Node *node = NULL;
+    // printf("sdrfgthyj");
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
+        
+        tokens->size++;
+        node_l = get_var(tokens);
+        Node *node_r = NULL;
+        assert(tokens->array[tokens->size].oper == OP_EQU && "syntax erorr");
+
+        if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_EQU)) {
+            tokens->size++;
+            node_r = get_add_sub(tokens);
+        }
+
+        node_l = create_node(TP_OPERATOR, OP_VAR, node_l, node_r);
+
+        node = CN(node_l, get_type(tokens));
+
+        assert(node != NULL && "syntax error in var declaration");
+    }
+
     return node;
-
 }
 
 Node *get_assignment(Tokenizer *tokens) {
 
+    // for (int i = tokens->size; i < tokens->capacity; i++) {
+    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    // }
+    // printf("\n");
     Node *node_r = get_var(tokens);
+    Node *node = NULL;
 
     if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))) {
         
@@ -166,16 +212,15 @@ Node *get_assignment(Tokenizer *tokens) {
         tokens->size++;
 
         Node *node_l = get_add_sub(tokens);
-    // for (int i = tokens->size; i < tokens->capacity; i++) {
-    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-    // }
-    // printf("\n");
 
         node_r = create_node(TP_OPERATOR, op, node_r, node_l);
+
+        node = CN(node_r, get_type(tokens));
+
     }
 
-    assert(node_r != NULL && "null node in recursive despend get_type");
-    return node_r;
+    assert(node != NULL && "null node in recursive despend get_type");
+    return node;
 }
 
 Node *get_add_sub(Tokenizer *tokens) {
@@ -254,6 +299,10 @@ Node *get_unary_op(Tokenizer *tokens) {
         
         if (op == OP_LN) {
             node_r = LN(node_l);
+        } else if (op == OP_SIN) {
+            node_r = SIN(node_l);
+        } else if (op == OP_COS) {
+            node_r = COS(node_l);
         }
     }
 
@@ -299,12 +348,9 @@ Node *get_number(Tokenizer *tokens) {
     return node;
 }
 
+
 Node *get_var(Tokenizer *tokens) {
     Node *node = NULL;
-
-    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
-        tokens->size++;
-    }
 
     node = CREATE_VAR(tokens->array[tokens->size].elem);
 
@@ -390,6 +436,7 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
     }
 
     tokens->capacity = i;
+
     tokens->size = 0;
 }
 

@@ -9,6 +9,8 @@
 
 #define ADD(node_l, node_r)   create_node(TP_OPERATOR, OP_ADD, node_l, node_r)
 
+#define CN(node_l, node_r)   create_node(TP_OPERATOR, OP_CONNECT, node_l, node_r)
+
 #define SUB(node_l, node_r)   create_node(TP_OPERATOR, OP_SUB, node_l, node_r)
 
 #define MUL(node_l, node_r)   create_node(TP_OPERATOR, OP_MUL, node_l, node_r)
@@ -18,6 +20,8 @@
 #define DEG(node_l, node_r)   create_node(TP_OPERATOR, OP_DEG, node_l, node_r)
 
 #define LN(node)              create_node(TP_OPERATOR, OP_LN, NULL, node)
+#define COS(node)             create_node(TP_OPERATOR, OP_COS, NULL, node)
+#define SIN(node)             create_node(TP_OPERATOR, OP_SIN, NULL, node)
 
 
 #define dL diff_tree(node->left)

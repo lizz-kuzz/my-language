@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     // printf("%d", tree.root_tree->type);
 
     dump_tree(tree.root_tree);
+    close_file();
 
 
 

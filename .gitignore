@@ -1,0 +1,8 @@
+.vscode/
+*.exe
+res/text_tex.txt
+*.dot
+*.aux
+processor/
+*.out
+valgrind-out.txt
