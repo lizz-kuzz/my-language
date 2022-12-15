@@ -134,12 +134,11 @@ Node *get_grammar(Tokenizer *tokens) {
 
     Node *node = get_type(tokens);
 
-    // assert(tokens->size == tokens->capacity);
+    assert(tokens->size == tokens->capacity);
 
     return node;
 }
 
-// Node *get_connect(Tokenizer *to)
 Node *get_type(Tokenizer *tokens) {
     
     Node *node = NULL;
@@ -151,12 +150,14 @@ Node *get_type(Tokenizer *tokens) {
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
         node_l = ger_var_declaration(tokens);
                 // декларация переменных 
-    } 
-
-    for (int i = tokens->size; i < tokens->capacity; i++) {
-        printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_IF)) {
+        node_l = get_condition(tokens);
     }
-    printf("\n");
+
+    // for (int i = tokens->size; i < tokens->capacity; i++) {
+    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    // }
+    // printf("\n");
 
     // node_l = create_node(TP_OPERATOR, OP_CONNECT, node_l, node);
 
@@ -168,6 +169,73 @@ Node *get_type(Tokenizer *tokens) {
 
     return node_l;
 
+}
+
+Node *get_condition(Tokenizer *tokens) {
+
+    Node *node = NULL;
+    Node *node_l = NULL;
+    Node *node_r = NULL;
+
+    Node *node_l_body = NULL;
+    Node *node_r_body = NULL;
+
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_IF)) {
+
+        // for (int i = tokens->size; i < tokens->capacity; i++) {
+        //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+        // }
+        // printf("\n");
+
+        tokens->size++;
+        assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper IF");
+        node_l = get_add_sub(tokens);
+
+        assert(tokens->array[tokens->size].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper IF");
+        tokens->size++;
+
+        node_l_body = get_body(tokens);
+        // printf("\n after_body\n");
+
+        // for (int i = tokens->size; i < tokens->capacity; i++) {
+        //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+        // }
+        // printf("\n");
+
+        if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_ELSE)) {
+            tokens->size++;
+            node_r_body = get_body(tokens);
+        }
+
+        if (node_r_body) {
+            node_r = create_node(TP_OPERATOR, OP_ELSE, node_l_body, node_r_body);
+            node_l = create_node(TP_OPERATOR, OP_IF, node_l, node_r);
+        } else {
+            node_l = create_node(TP_OPERATOR, OP_IF, node_l, node_l_body);
+        }
+
+
+        node = CN(node_l, get_type(tokens));
+
+    }
+
+
+    return node;
+}
+Node *get_body(Tokenizer *tokens) {
+    Node *node = NULL;
+
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_LEFT_FIGURE_BRACKET)) {
+
+        tokens->size++;
+        node = get_type(tokens);
+
+        assert(tokens->array[tokens->size].oper == OP_RIGHT_FIGURE_BRACKET && "sintax erorr: you forgot } in body");
+        tokens->size++;
+
+    }
+
+    return node;
 }
 
 Node *ger_var_declaration(Tokenizer *tokens) {

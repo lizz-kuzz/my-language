@@ -1,5 +1,8 @@
-var y1 = 5;
-var x2 = 3;
-x2= y1 + 8;
-var yyyyy = 0;
-yyyyy + = y1 + x2;
+var y = 5;
+var x = 9;
+if (y+x + 87) {
+    x = 2;
+    y -= x;
+} else {
+    y = 5;
+}
