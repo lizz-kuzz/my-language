@@ -174,7 +174,7 @@ Node *ger_var_declaration(Tokenizer *tokens) {
 
     Node *node_l = NULL;
     Node *node = NULL;
-    // printf("sdrfgthyj");
+
     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
         
         tokens->size++;
@@ -188,6 +188,9 @@ Node *ger_var_declaration(Tokenizer *tokens) {
         }
 
         node_l = create_node(TP_OPERATOR, OP_VAR, node_l, node_r);
+
+        tokens->size++;
+        assert(tokens->array[tokens->size].oper != OP_END_LINE && "sintax erorr: you forgot ;");
 
         node = CN(node_l, get_type(tokens));
 
@@ -214,6 +217,9 @@ Node *get_assignment(Tokenizer *tokens) {
         Node *node_l = get_add_sub(tokens);
 
         node_r = create_node(TP_OPERATOR, op, node_r, node_l);
+
+        tokens->size++;
+        assert(tokens->array[tokens->size].oper != OP_END_LINE && "sintax erorr: you forgot ;");
 
         node = CN(node_r, get_type(tokens));
 
