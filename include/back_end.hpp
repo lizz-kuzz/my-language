@@ -66,6 +66,8 @@ Node *get_grammar(Tokenizer *tokens);
 
 Node *get_type(Tokenizer *tokens);
 
+Node *get_cycle(Tokenizer *tokens);
+
 Node *get_condition(Tokenizer *tokens);
 
 Node *get_body(Tokenizer *tokens);

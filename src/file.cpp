@@ -71,19 +71,14 @@ char *program_text_normalize(char *text, int SYMBOLS)  {
     *copy_text = *text;
     char *point = copy_text;
     
-    for (; *text != '\0'; point++, text++)  { 
+    for (; *text != '\0'; point++, text++)  {
 
-        if (*text == '\n') {
-            text++;
-    // printf("{%s}\n", text);
-
-        }
-
-        while (*text == ' '  && *text != '\0') 
+        while (isspace(*text) && *text != '\0') 
             text++;
         
         *point = *text;
     }
+
     *point = '\0';
 
     return copy_text;

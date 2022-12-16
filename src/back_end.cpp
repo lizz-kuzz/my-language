@@ -142,16 +142,18 @@ Node *get_grammar(Tokenizer *tokens) {
 Node *get_type(Tokenizer *tokens) {
     
     Node *node = NULL;
-    Node *node_l = NULL; 
+    // Node *node_l = NULL; 
 
     if (TOKEN_TYPE(TP_VAR) || ((TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))))) {
-        node_l = get_assignment(tokens);
+        node = get_assignment(tokens);
                 // присваивание 
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
-        node_l = ger_var_declaration(tokens);
+        node = ger_var_declaration(tokens);
                 // декларация переменных 
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_IF)) {
-        node_l = get_condition(tokens);
+        node = get_condition(tokens);
+    } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_WHILE)) {
+        node = get_cycle(tokens);
     }
 
     // for (int i = tokens->size; i < tokens->capacity; i++) {
@@ -167,8 +169,36 @@ Node *get_type(Tokenizer *tokens) {
 
     // assert(node_l && "null node in recursive despend get_type");
 
-    return node_l;
+    return node;
 
+}
+Node *get_cycle(Tokenizer *tokens) {
+    Node *node = NULL;
+    Node *node_l = NULL;
+    Node *node_body = NULL;
+
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_WHILE)) {
+        tokens->size++;
+        assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper WHILE");
+        
+        node_l = get_add_sub(tokens);
+
+        assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper WHILE");
+       
+        node_body = get_body(tokens);
+
+        node_l = create_node(TP_OPERATOR, OP_WHILE, node_l, node_body);
+    // printf("\n");
+
+    //       for (int i = tokens->size; i < tokens->capacity; i++) {
+    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    // }
+    // printf("\n");
+
+        node = CN(node_l, get_type(tokens));
+
+    }
+    return node;
 }
 
 Node *get_condition(Tokenizer *tokens) {
@@ -191,8 +221,8 @@ Node *get_condition(Tokenizer *tokens) {
         assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper IF");
         node_l = get_add_sub(tokens);
 
-        assert(tokens->array[tokens->size].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper IF");
-        tokens->size++;
+        assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper IF");
+        
 
         node_l_body = get_body(tokens);
         // printf("\n after_body\n");
@@ -204,7 +234,12 @@ Node *get_condition(Tokenizer *tokens) {
 
         if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_ELSE)) {
             tokens->size++;
-            node_r_body = get_body(tokens);
+
+            if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_IF)) {
+                node_r_body = get_condition(tokens);
+            } else {
+                node_r_body = get_body(tokens);
+            }
         }
 
         if (node_r_body) {
@@ -485,11 +520,11 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
     assert(tokens   != NULL && "null poiner tokens");
     assert(text_buf != NULL && "null poiner text_buf");
 
-    int size_buf = strlen(text_buf);
+    long long unsigned size_buf = strlen(text_buf);
 
     tokens->array = (token_elem *) calloc(size_buf, sizeof(token_elem));
 
-    int i = 0;
+    unsigned i = 0;
 
     for (; i < size_buf && *text_buf != '\0'; i++) {
 
@@ -506,7 +541,7 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
             tokens->array[i].elem = (char *) calloc(size_buf, sizeof(char));
             create_var_token(tokens, &text_buf, i);
             
-        } 
+        } else break;
     }
 
     tokens->capacity = i;
@@ -737,57 +772,57 @@ Node *create_var_node(char *var, Node *node_left, Node *node_right) {
     return node;
 }
 
-Node *diff_tree(Node *node) {
-    switch (node->type) {
-        case TP_NUMBER: {
-            return CREATE_NUM(0);
+// Node *diff_tree(Node *node) {
+//     switch (node->type) {
+//         case TP_NUMBER: {
+//             return CREATE_NUM(0);
 
-        }
+//         }
 
-        case TP_VAR: {
-            return CREATE_NUM(1);
-        } 
+//         case TP_VAR: {
+//             return CREATE_NUM(1);
+//         } 
 
-        case TP_OPERATOR: {
-            switch (node->value.oper) {
-                case OP_ADD: 
-                    return ADD(dL, dR);
+//         case TP_OPERATOR: {
+//             switch (node->value.oper) {
+//                 case OP_ADD: 
+//                     return ADD(dL, dR);
 
-                case OP_SUB: 
-                    return SUB(dL, dR);
+//                 case OP_SUB: 
+//                     return SUB(dL, dR);
 
-                case OP_MUL:
-                    return ADD(MUL(dL, cR), MUL(cL, dR));
+//                 case OP_MUL:
+//                     return ADD(MUL(dL, cR), MUL(cL, dR));
 
-                case OP_DIV: 
-                    return DIV(SUB(MUL(dL, cR), MUL(cL, dR)), MUL(cR, cR));
+//                 case OP_DIV: 
+//                     return DIV(SUB(MUL(dL, cR), MUL(cL, dR)), MUL(cR, cR));
                 
-                case OP_DEG:
+//                 case OP_DEG:
 
-                    if (node->left->type == TP_NUMBER) {
-                        return MUL(DEG(cL, cR), MUL(dR, LN(cL)));
-                    } else {
-                        return MUL(MUL(cR, DEG(cL, SUB(cR, CREATE_NUM(1)))), dL);
-                    }
+//                     if (node->left->type == TP_NUMBER) {
+//                         return MUL(DEG(cL, cR), MUL(dR, LN(cL)));
+//                     } else {
+//                         return MUL(MUL(cR, DEG(cL, SUB(cR, CREATE_NUM(1)))), dL);
+//                     }
 
-                case OP_LN:
+//                 case OP_LN:
 
-                    if (node->right->type == TP_NUMBER) {
-                        return CREATE_NUM(0);
-                    } else {
-                        return MUL(DIV(CREATE_NUM(1), cR), dR);
-                    }
+//                     if (node->right->type == TP_NUMBER) {
+//                         return CREATE_NUM(0);
+//                     } else {
+//                         return MUL(DIV(CREATE_NUM(1), cR), dR);
+//                     }
 
-                default:
-                    break;
-            }
-        }
+//                 default:
+//                     break;
+//             }
+//         }
     
-        default:
-            return node;
-            break;
-    }
-}
+//         default:
+//             return node;
+//             break;
+//     }
+// }
 
 //-----------------------------------------END DIFFERENTIATOR-----------------------------------------------------------
 

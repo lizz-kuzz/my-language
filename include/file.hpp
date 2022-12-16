@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 
 void     create_file_path       (char *FILE_PROG, char *path, char *name_file);

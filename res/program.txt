@@ -1,8 +1,13 @@
 var y = 5;
-var x = 9;
-if (y+x + 87) {
+var x = 10;
+while (y+x + 87) {
     x = 2;
+    if (x+ y) {
+        x = 3456;
+        var vvvvv = 666;
+        
+    } else {
+        var ffff = 0;
+    }
     y -= x;
-} else {
-    y = 5;
 }
