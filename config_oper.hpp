@@ -5,12 +5,18 @@ DEF_OPER(OP_CONNECT, 0, "CN", 1,
 
 DEF_OPER(OP_SUB_EQU, 11, "-=", 2,
             {
-            // fprintf()
+            fprintf(file, "POP [ax]\n");
+            fprintf(file, "PUSH [%d]\n", find_var(var_table, node->left->value.var));
+            fprintf(file, "PUSH [ax]\n");
+            fprintf(file, "SUB\n");
+            fprintf(file, "POP [%d]\n", find_var(var_table, node->left->value.var));
             })
 
 DEF_OPER(OP_ADD_EQU, 12, "+=", 2, 
             {
-            // 
+            fprintf(file, "PUSH [%d]\n", find_var(var_table, node->left->value.var));
+            fprintf(file, "ADD\n");
+            fprintf(file, "POP [%d]\n", find_var(var_table, node->left->value.var));
             }) 
 
 DEF_OPER(OP_ADD, 1, "+", 1, 
@@ -68,13 +74,11 @@ DEF_OPER(OP_VAR, 9, "var", 3,
             
             fprintf(file, "POP [%d]\n", var_table->size);
             var_table->size++;        
-            // fprintf(file, "\n");
             })
 
 DEF_OPER(OP_EQU, 10, "=", 1, 
             {
-            fprintf(file, "POP []\n");
-            // рор адрес переменной из таблички переменных
+            fprintf(file, "POP [%d]\n", find_var(var_table, node->left->value.var));
             })
 
 
@@ -127,20 +131,17 @@ DEF_OPER(OP_RET, 22, "return", 6, )
 
 DEF_OPER(OP_SCAN, 23, "scan", 4, 
             {
-            // добавить куда переменную кинуть через pop
             fprintf(file, "IN\n");
             })
 
 DEF_OPER(OP_PRINT_VAR, 24, "print_var", 9, 
             {
-            // добавить аргументы
             fprintf(file, "OUT\n");
             })
 
         
 DEF_OPER(OP_PRINT_STR, 25, "print_str", 9, 
             {
-            // добавить аргументы
             fprintf(file, "OUT_CHAR\n");
             })
 

@@ -1,0 +1,21 @@
+PUSH 5
+POP [0]
+PUSH 2
+POP [1]
+PUSH 1
+POP [2]
+PUSH 66
+POP [3]
+PUSH [2]
+OUT
+PUSH [2]
+IN
+PUSH [2]
+OUT
+
+
+
+
+
+
+HLT

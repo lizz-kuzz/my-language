@@ -24,6 +24,9 @@ int main(int argc, char *argv[]) {
     }
     close_file();
 
+    system("./ass.exe asm_output.txt");
+    system("./cpu.exe");
+
 
 
 

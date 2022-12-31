@@ -16,3 +16,12 @@ ass:
 
 cpu:
 	@ g++ $(FLAGS) proc/main.cpp proc/processor.cpp stack/stack.cpp stack/debug.cpp  -o cpu.exe
+
+run: asm_run cpu_run
+	./do.exe 
+
+asm_run:
+	./ass.exe asm_output.txt 
+
+cpu_run:
+	./cpu.exe
