@@ -1,0 +1,26 @@
+IN
+POP bx
+PUSH 1
+POP ax
+
+fact:
+
+PUSH bx
+PUSH ax
+MUL
+POP ax
+
+PUSH bx
+PUSH -1
+ADD
+POP bx
+
+
+PUSH bx
+PUSH 0
+
+JNE fact
+
+PUSH ax
+OUT 
+HLT

@@ -12,7 +12,8 @@ FILE *file_tree = fopen(NAME_FILE, "w");
 
 const int MAX_SIZE = 10;
 
-void ctor_tree(const char *FILE_INPUT, Tree *tree) {
+int ctor_tree(const char *FILE_INPUT, Tree *tree) {
+
     char *text_buf;
 
     text_buf = read_file(FILE_INPUT, text_buf);
@@ -22,22 +23,30 @@ void ctor_tree(const char *FILE_INPUT, Tree *tree) {
     Tokenizer tokens = {};
 
     tokenizer_ctor(&tokens, point_text_buf);
+
     printf("%d\n", tokens.capacity);
+
     for (int i = 0; i < tokens.capacity; i++) {
         printf("%d [\"%s\"] {%d} ", tokens.array[i].type, tokens.array[i].elem, tokens.array[i].oper);
     }
+
     printf("\n");
 
     tree->root_tree = (Node *) calloc(1, sizeof(Node));
 
     tree->root_tree = get_grammar(&tokens);
-
+    
+    int capacity = tokens.capacity;
+    
     tokenizer_dtor(&tokens);
 
     free(text_buf);
+
+    return capacity;
 }
 
 Node *create_tree_from_text(Node *node, char **text_buf) {
+
     if (**text_buf == '\0') return node;
 
 
@@ -120,7 +129,6 @@ void dtor_tree(Node *node) {
 
     dtor_tree(node->left);
     node->left = NULL;
-
     dtor_tree(node->right);
     node->right = NULL;
     free(node);
@@ -135,9 +143,37 @@ Node *get_grammar(Tokenizer *tokens) {
     Node *node = get_type(tokens);
 
     assert(tokens->size == tokens->capacity);
+    
+    printf("successful parsing\n");
 
     return node;
 }
+
+// Node *get_decl_func(Tokenizer *tokens) {
+
+//     Node *node = NULL;
+
+//     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) { 
+//         tokens->size++;
+
+//         char *name_func = (char *) calloc(strlen(tokens->array[tokens->size].elem), sizeof(char));
+//         name_func = strcpy(name_func, tokens->array[tokens->size].elem);
+//         tokens->size++;
+//         assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
+//         // tokens->size++;        
+//         assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
+//         node = create_var_node(name_func, NULL, get_body(tokens));
+//     printf("\n");
+//           for (int i = tokens->size; i < tokens->capacity; i++) {
+//         printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+//     }
+//     printf("\n");
+
+//         free(name_func);
+//     }
+
+//     return node;
+// }
 
 Node *get_type(Tokenizer *tokens) {
     
@@ -154,8 +190,16 @@ Node *get_type(Tokenizer *tokens) {
         node = get_condition(tokens);
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_WHILE)) {
         node = get_cycle(tokens);
+    } else if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SCAN) || TOKEN_OP(OP_PRINT_VAR))) {
+        node = get_in_out_put(tokens);
     }
+    // else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) {
+        // printf("hhgfd");
+        // node = get_decl_func(tokens);
+    // }
+    //  (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) {
 
+    // }
     // for (int i = tokens->size; i < tokens->capacity; i++) {
     //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
     // }
@@ -170,9 +214,42 @@ Node *get_type(Tokenizer *tokens) {
     // assert(node_l && "null node in recursive despend get_type");
 
     return node;
-
 }
+
+Node *get_in_out_put(Tokenizer *tokens) {
+
+    Node *node = NULL;
+    Node *node_l = NULL;
+
+    if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SCAN) || TOKEN_OP(OP_PRINT_VAR))) {
+        
+        int op = tokens->array[tokens->size].oper;
+
+        tokens->size++;
+
+        if (op == OP_SCAN) {
+            assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper SCAN");
+            node_l = create_node(TP_OPERATOR, OP_SCAN, get_var(tokens), NULL);
+            
+            assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper SCAN");
+            assert(tokens->array[tokens->size++].oper == OP_END_LINE && "sintax error: you forgot ';' in oper SCAN");
+
+        } else if (op == OP_PRINT_VAR) {
+
+            assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper PRINT");
+            node_l = create_node(TP_OPERATOR, OP_PRINT_VAR, get_var(tokens), NULL);
+            
+            assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper PRINT");
+            assert(tokens->array[tokens->size++].oper == OP_END_LINE && "sintax error: you forgot ';' in oper PRINT");
+        }
+        
+        node = CN(node_l, get_type(tokens));
+    }
+    return node;
+}
+
 Node *get_cycle(Tokenizer *tokens) {
+
     Node *node = NULL;
     Node *node_l = NULL;
     Node *node_body = NULL;
@@ -188,16 +265,10 @@ Node *get_cycle(Tokenizer *tokens) {
         node_body = get_body(tokens);
 
         node_l = create_node(TP_OPERATOR, OP_WHILE, node_l, node_body);
-    // printf("\n");
-
-    //       for (int i = tokens->size; i < tokens->capacity; i++) {
-    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-    // }
-    // printf("\n");
 
         node = CN(node_l, get_type(tokens));
-
     }
+
     return node;
 }
 
@@ -212,11 +283,6 @@ Node *get_condition(Tokenizer *tokens) {
 
     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_IF)) {
 
-        // for (int i = tokens->size; i < tokens->capacity; i++) {
-        //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-        // }
-        // printf("\n");
-
         tokens->size++;
         assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper IF");
         node_l = get_add_sub(tokens);
@@ -225,12 +291,6 @@ Node *get_condition(Tokenizer *tokens) {
         
 
         node_l_body = get_body(tokens);
-        // printf("\n after_body\n");
-
-        // for (int i = tokens->size; i < tokens->capacity; i++) {
-        //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-        // }
-        // printf("\n");
 
         if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_ELSE)) {
             tokens->size++;
@@ -249,15 +309,14 @@ Node *get_condition(Tokenizer *tokens) {
             node_l = create_node(TP_OPERATOR, OP_IF, node_l, node_l_body);
         }
 
-
         node = CN(node_l, get_type(tokens));
-
     }
-
 
     return node;
 }
+
 Node *get_body(Tokenizer *tokens) {
+
     Node *node = NULL;
 
     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_LEFT_FIGURE_BRACKET)) {
@@ -267,7 +326,6 @@ Node *get_body(Tokenizer *tokens) {
 
         assert(tokens->array[tokens->size].oper == OP_RIGHT_FIGURE_BRACKET && "sintax erorr: you forgot } in body");
         tokens->size++;
-
     }
 
     return node;
@@ -275,14 +333,14 @@ Node *get_body(Tokenizer *tokens) {
 
 Node *ger_var_declaration(Tokenizer *tokens) {
 
-    Node *node_l = NULL;
     Node *node = NULL;
+    Node *node_l = NULL;
+    Node *node_r = NULL;
 
     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
         
         tokens->size++;
         node_l = get_var(tokens);
-        Node *node_r = NULL;
         assert(tokens->array[tokens->size].oper == OP_EQU && "syntax erorr");
 
         if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_EQU)) {
@@ -305,10 +363,6 @@ Node *ger_var_declaration(Tokenizer *tokens) {
 
 Node *get_assignment(Tokenizer *tokens) {
 
-    // for (int i = tokens->size; i < tokens->capacity; i++) {
-    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-    // }
-    // printf("\n");
     Node *node_r = get_var(tokens);
     Node *node = NULL;
 
@@ -328,7 +382,7 @@ Node *get_assignment(Tokenizer *tokens) {
 
     }
 
-    assert(node != NULL && "null node in recursive despend get_type");
+    assert(node != NULL && "null node in recursive despend get type");
     return node;
 }
 
@@ -360,6 +414,7 @@ Node *get_mul_div(Tokenizer *tokens) {
     Node *node_r = get_deg(tokens);
 
     while (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_MUL) || TOKEN_OP(OP_DIV))) {
+
         int op = tokens->array[tokens->size].oper;
 
         tokens->size++;
@@ -459,6 +514,7 @@ Node *get_number(Tokenizer *tokens) {
 
 
 Node *get_var(Tokenizer *tokens) {
+
     Node *node = NULL;
 
     node = CREATE_VAR(tokens->array[tokens->size].elem);
@@ -506,7 +562,7 @@ void create_var_token(Tokenizer *tokens, char **text_buf, int ip) {
 
 }
 
-#define DEF_OPER(operator, num, mean, len)                              \
+#define DEF_OPER(operator, num, mean, len, ...)                              \
     if (strncmp(text_buf, mean, len) == 0) {                            \
         tokens->array[i].type = TP_OPERATOR;                            \
         tokens->array[i].oper = operator;                               \
@@ -522,7 +578,7 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
 
     long long unsigned size_buf = strlen(text_buf);
 
-    tokens->array = (token_elem *) calloc(size_buf, sizeof(token_elem));
+    tokens->array = (Token_elem *) calloc(size_buf, sizeof(Token_elem));
 
     unsigned i = 0;
 
@@ -604,8 +660,8 @@ void print_tree(Node *node, Node *parent) {
     
 }
 
-#define DEF_OPER(oper, num, string, len) \
-        case oper: {                     \
+#define DEF_OPER(operator, num, string, len, ...) \
+        case (operator): {                     \
             fprintf(file, string);       \
             break;                       \
         }                                \
@@ -615,28 +671,29 @@ void print_node(FILE *file, Node *node) {
     assert(node && "node null");
 
     switch (node->type) {
-        case TP_OPERATOR:
+        case TP_OPERATOR: {
             switch (node->value.oper) {
-
+                
                 #include "../config_oper.hpp"
 
-                default:
+                default: {
                     fprintf(file, "didn't find oper");
                     break;
+                }
             }
-            break;
 
-        case TP_VAR:
+            break;
+        } case TP_VAR: {
             fprintf(file, "%s", node->value.var);
             break;
-
-        case TP_NUMBER:
+        } case TP_NUMBER: {
             if (node->value.number < 0) {
                 fprintf(file, "(%d)", node->value.number);
             } else {
                 fprintf(file, "%d", node->value.number);
             } 
             break;
+        }
 
         default:
             break;
@@ -768,6 +825,19 @@ Node *create_var_node(char *var, Node *node_left, Node *node_right) {
 
     node->value.var = (char *) calloc(strlen(var), sizeof(char));
     node->value.var = strcpy(node->value.var, var);
+
+    return node;
+}
+
+Node *create_func_node(char *name_func, Node *node_left, Node *node_right) {
+    Node *node = (Node *)calloc(1, sizeof(Node));
+
+    node->type = TP_FUNC;
+    node->left = node_left;
+    node->right = node_right;
+
+    node->value.var = (char *) calloc(strlen(name_func), sizeof(char));
+    node->value.var = strcpy(node->value.var, name_func);
 
     return node;
 }

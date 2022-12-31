@@ -1,13 +1,12 @@
+
 var y = 5;
 var x = 10;
-while (y+x + 87) {
-    x = 2;
-    if (x+ y) {
-        x = 3456;
-        var vvvvv = 666;
-        
-    } else {
-        var ffff = 0;
-    }
-    y -= x;
-}
+var z = 0;
+var tttt = 66;
+
+
+print_var(z);
+z = x + 4;
+print_var(z);
+
+

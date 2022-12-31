@@ -48,33 +48,23 @@
 #define IS_CONST_SON_NODE(node) node->left->type == TP_NUMBER && node->right->type == TP_NUMBER
 
 
-#define OP_CONST(OP)                                                        \
-                node->type = TP_NUMBER;                                     \
-                switch (OP) {                                               \
-                case OP_ADD:                                                \
-                    node->value.number = node->left->value.number + node->right->value.number;   \
-                    break;                                                  \
-                case OP_SUB:                                                \
-                    node->value.number = node->left->value.number - node->right->value.number;   \
-                    break;                                                  \
-                case OP_MUL:                                                \
-                    node->value.number = node->left->value.number * node->right->value.number;   \
-                    break;                                                  \
-                case OP_DIV:                                                \
-                    if (node->right->value.number != 0)                     \
+#define OP_CONST(OP)                                                                                 \
+                node->type = TP_NUMBER;                                                              \
+                if (OP == OP_ADD){                                                                   \
+                    node->value.number = node->left->value.number + node->right->value.number;       \
+                } else if (OP == OP_SUB) {                                                           \
+                    node->value.number = node->left->value.number - node->right->value.number;       \
+                } else if (OP == OP_MUL) {                                                           \
+                    node->value.number = node->left->value.number * node->right->value.number;       \
+                } else if (OP == OP_DIV) {                                                           \
+                    if (node->right->value.number != 0)                                              \
                         node->value.number = node->left->value.number / node->right->value.number;   \
-                    break;                                                  \
-                case OP_LN:                                                 \
-                    break;                                                  \
-                case OP_DEG:                                                \
+                } else if (OP == OP_LN) {                                                            \
+                } else if (OP == OP_DEG) {                                                           \
                     node->value.number = pow(node->left->value.number, node->right->value.number);   \
-                    break;                                                  \
-                                                                            \
-                default:                                                    \
-                    break;                                                  \
-                }                                                           \
-                node->left = NULL;                                          \
-                node->right = NULL;                                         \
+                }                                                                                    \
+                node->left = NULL;                                                                   \
+                node->right = NULL;                                                                  \
                 
 #define TOKEN_TYPE(tp) tokens->array[tokens->size].type == tp
 

@@ -8,7 +8,11 @@ FLAGS = -g -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-e
 СС = g++
 
 
-all:
-	@ g++ $(FLAGS) src/main.cpp src/file.cpp src/back_end.cpp -o do.exe
+language:
+	@ g++ $(FLAGS) src/main.cpp src/file.cpp src/back_end.cpp src/front_end.cpp -o do.exe
 
+ass:
+	g++ $(FLAGS) assembler/main.cpp assembler/file.cpp assembler/assembler.cpp -o ass.exe 
 
+cpu:
+	@ g++ $(FLAGS) proc/main.cpp proc/processor.cpp stack/stack.cpp stack/debug.cpp  -o cpu.exe

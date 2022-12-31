@@ -1,5 +1,6 @@
 #include "../include/file.hpp"
 #include "../include/back_end.hpp"
+#include "../include/front_end.hpp"
 
 int main(int argc, char *argv[]) {
     
@@ -8,12 +9,19 @@ int main(int argc, char *argv[]) {
     // char *FILE_INPUT = (char *) calloc(strlen(path) + strlen(name_file), sizeof(char));
     // create_file_path(FILE_INPUT, path, name_file);
     const char *FILE_INPUT = "res/program.txt";
+    const char *FILE_ASM = "res/asm_output.txt";
 
     Tree tree = {};
-    ctor_tree(FILE_INPUT, &tree);
-    // printf("%d", tree.root_tree->type);
+    Variable_table var_table = {};
 
+    var_table.capacity = ctor_tree(FILE_INPUT, &tree);
+    // printf("%d", tree.root_tree->type);
+    ctor_var_table(&var_table);
     dump_tree(tree.root_tree);
+    printf_asm(FILE_ASM, tree.root_tree, &var_table);
+    for (int i = 0; i < var_table.size; i++) {
+        printf("'%s' [%d]\n", var_table.arr[i].name_var, var_table.arr[i].id);
+    }
     close_file();
 
 

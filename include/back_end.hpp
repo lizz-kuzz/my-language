@@ -1,5 +1,5 @@
-#ifndef DIFF_FUNC_HPP_INCLUDED
-#define DIFF_FUNC_HPP_INCLUDED
+#ifndef BACK_END_HPP_INCLUDED
+#define BACK_END_HPP_INCLUDED
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -7,9 +7,9 @@
 
 
 
-#define DEF_OPER(oper, num_oper, mean, len) \
-    oper = num_oper,                        \
 
+#define DEF_OPER(oper, num_oper, mean, len, ...) \
+    oper = num_oper,                        \
 
 enum TYPE_OPERATOR {
     #include "../config_oper.hpp"
@@ -22,6 +22,7 @@ enum TYPE_NODE {
     TP_OPERATOR = 1,
     TP_VAR = 2,
     TP_NUMBER = 3,
+    TP_FUNC = 4,
 };
 
 union data {
@@ -41,14 +42,14 @@ struct Tree {
     Node *root_tree;
 };
 
-struct token_elem { 
+struct Token_elem { 
     char      *elem;
     TYPE_NODE  type;
     TYPE_OPERATOR oper;
 };
 
 struct Tokenizer {
-    token_elem *array;
+    Token_elem *array;
     int         size;
     int         capacity;
 };
@@ -64,9 +65,13 @@ grammar =
 
 Node *get_grammar(Tokenizer *tokens);
 
+Node *get_decl_func(Tokenizer *tokens);
+
 Node *get_type(Tokenizer *tokens);
 
 Node *get_cycle(Tokenizer *tokens);
+
+Node *get_in_out_put(Tokenizer *tokens);
 
 Node *get_condition(Tokenizer *tokens);
 
@@ -104,7 +109,7 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf);
 
 void tokenizer_dtor(Tokenizer *tokens);
 
-int is_oper(char symbol);
+int  is_oper(char symbol);
 
 // -------------------------------------END TOKENIZER FUNC---------------------------------------------------
 
@@ -115,7 +120,7 @@ int is_oper(char symbol);
 
 Node *create_tree_from_text(Node *node, char **text_buf);
 
-void ctor_tree(const char *FILE_INPUT, Tree *tree);
+int   ctor_tree(const char *FILE_INPUT, Tree *tree);
 
 void dtor_tree(Node *node);
 
@@ -153,6 +158,7 @@ Node *create_node(TYPE_NODE tp_node, int value, Node *node_left, Node *node_righ
 
 Node *create_var_node(char *var, Node *node_left, Node *node_right);
 
+Node *create_func_node(char *var, Node *node_left, Node *node_right);
 //-----------------------------------------END DIFFERENTIATOR FUNC-----------------------------------------------------------
 
 
