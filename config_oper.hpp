@@ -116,8 +116,9 @@ DEF_OPER(OP_RIGHT_FIGURE_BRACKET, 19, "}", 1,
 
 DEF_OPER(OP_WHILE, 20, "while", 5,
             {
-            // fprintf(file, "lable_while_%d\n", count_while);
-            count_while++;
+            fprintf(file, "JMP lable_while_beg_%d\n", count_while);
+            
+            fprintf(file, "lable_while_end_%d:\n", count_while);
             })
 
 DEF_OPER(OP_DEC_FUNC, 21, "decl", 4, )

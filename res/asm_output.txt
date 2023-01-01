@@ -6,41 +6,27 @@ PUSH 3
 POP [2]
 PUSH 66
 POP [3]
-PUSH [2]
-PUSH [1]
-ADD
-PUSH [0]
-SUB
-PUSH 0
-JE lable_if_1
-PUSH [2]
-OUT
 
-JMP lable_else_0x555df62d0be0
+lable_while_beg_1:
 
-lable_if_1:
 PUSH [2]
-PUSH [1]
+PUSH 1
 ADD
-PUSH [0]
-SUB
 PUSH 0
-JE lable_if_2
-PUSH 23456
+JE lable_while_end_1
+PUSH [2]
+PUSH 1
+POP [ax]
+PUSH [2]
+PUSH [ax]
+SUB
 POP [2]
 PUSH [2]
 OUT
 
 
-JMP lable_else_0x555df62d0b50
-
-lable_if_2:
-PUSH [3]
-OUT
-
-lable_else_0x555df62d0b50:
-
-lable_else_0x555df62d0be0:
+JMP lable_while_beg_1
+lable_while_end_1:
 
 
 

@@ -1,134 +1,83 @@
 digraph {
-	node0x555df62d0d00[label="CN"]
-	node0x555df62d0380[label="var"]
-	node0x555df62d0d00 -> node0x555df62d0380
-	node0x555df62d0380[label="var"]
-	node0x555df62d0300[label="y"]
-	node0x555df62d0380 -> node0x555df62d0300
-	node0x555df62d0380[label="var"]
-	node0x555df62d0350[label="5"]
-	node0x555df62d0380 -> node0x555df62d0350
-	node0x555df62d0d00[label="CN"]
-	node0x555df62d0cd0[label="CN"]
-	node0x555df62d0d00 -> node0x555df62d0cd0
-	node0x555df62d0cd0[label="CN"]
-	node0x555df62d0430[label="var"]
-	node0x555df62d0cd0 -> node0x555df62d0430
-	node0x555df62d0430[label="var"]
-	node0x555df62d03b0[label="x"]
-	node0x555df62d0430 -> node0x555df62d03b0
-	node0x555df62d0430[label="var"]
-	node0x555df62d0400[label="2"]
-	node0x555df62d0430 -> node0x555df62d0400
-	node0x555df62d0cd0[label="CN"]
-	node0x555df62d0ca0[label="CN"]
-	node0x555df62d0cd0 -> node0x555df62d0ca0
-	node0x555df62d0ca0[label="CN"]
-	node0x555df62d04e0[label="var"]
-	node0x555df62d0ca0 -> node0x555df62d04e0
-	node0x555df62d04e0[label="var"]
-	node0x555df62d0460[label="z"]
-	node0x555df62d04e0 -> node0x555df62d0460
-	node0x555df62d04e0[label="var"]
-	node0x555df62d04b0[label="3"]
-	node0x555df62d04e0 -> node0x555df62d04b0
-	node0x555df62d0ca0[label="CN"]
-	node0x555df62d0c70[label="CN"]
-	node0x555df62d0ca0 -> node0x555df62d0c70
-	node0x555df62d0c70[label="CN"]
-	node0x555df62d0590[label="var"]
-	node0x555df62d0c70 -> node0x555df62d0590
-	node0x555df62d0590[label="var"]
-	node0x555df62d0510[label="tttt"]
-	node0x555df62d0590 -> node0x555df62d0510
-	node0x555df62d0590[label="var"]
-	node0x555df62d0560[label="66"]
-	node0x555df62d0590 -> node0x555df62d0560
-	node0x555df62d0c70[label="CN"]
-	node0x555df62d0c40[label="CN"]
-	node0x555df62d0c70 -> node0x555df62d0c40
-	node0x555df62d0c40[label="CN"]
-	node0x555df62d0c10[label="if"]
-	node0x555df62d0c40 -> node0x555df62d0c10
-	node0x555df62d0c10[label="if"]
-	node0x555df62d06e0[label="-"]
-	node0x555df62d0c10 -> node0x555df62d06e0
-	node0x555df62d06e0[label="-"]
-	node0x555df62d0660[label="+"]
-	node0x555df62d06e0 -> node0x555df62d0660
-	node0x555df62d0660[label="+"]
-	node0x555df62d05c0[label="z"]
-	node0x555df62d0660 -> node0x555df62d05c0
-	node0x555df62d0660[label="+"]
-	node0x555df62d0610[label="x"]
-	node0x555df62d0660 -> node0x555df62d0610
-	node0x555df62d06e0[label="-"]
-	node0x555df62d0690[label="y"]
-	node0x555df62d06e0 -> node0x555df62d0690
-	node0x555df62d0c10[label="if"]
-	node0x555df62d0be0[label="else"]
-	node0x555df62d0c10 -> node0x555df62d0be0
-	node0x555df62d0be0[label="else"]
-	node0x555df62d0790[label="CN"]
-	node0x555df62d0be0 -> node0x555df62d0790
-	node0x555df62d0790[label="CN"]
-	node0x555df62d0760[label="print_var"]
-	node0x555df62d0790 -> node0x555df62d0760
-	node0x555df62d0760[label="print_var"]
-	node0x555df62d0710[label="z"]
-	node0x555df62d0760 -> node0x555df62d0710
-	node0x555df62d0be0[label="else"]
-	node0x555df62d0bb0[label="CN"]
-	node0x555df62d0be0 -> node0x555df62d0bb0
-	node0x555df62d0bb0[label="CN"]
-	node0x555df62d0b80[label="if"]
-	node0x555df62d0bb0 -> node0x555df62d0b80
-	node0x555df62d0b80[label="if"]
-	node0x555df62d08e0[label="-"]
-	node0x555df62d0b80 -> node0x555df62d08e0
-	node0x555df62d08e0[label="-"]
-	node0x555df62d0860[label="+"]
-	node0x555df62d08e0 -> node0x555df62d0860
-	node0x555df62d0860[label="+"]
-	node0x555df62d07c0[label="z"]
-	node0x555df62d0860 -> node0x555df62d07c0
-	node0x555df62d0860[label="+"]
-	node0x555df62d0810[label="x"]
-	node0x555df62d0860 -> node0x555df62d0810
-	node0x555df62d08e0[label="-"]
-	node0x555df62d0890[label="y"]
-	node0x555df62d08e0 -> node0x555df62d0890
-	node0x555df62d0b80[label="if"]
-	node0x555df62d0b50[label="else"]
-	node0x555df62d0b80 -> node0x555df62d0b50
-	node0x555df62d0b50[label="else"]
-	node0x555df62d0a70[label="CN"]
-	node0x555df62d0b50 -> node0x555df62d0a70
-	node0x555df62d0a70[label="CN"]
-	node0x555df62d0990[label="="]
-	node0x555df62d0a70 -> node0x555df62d0990
-	node0x555df62d0990[label="="]
-	node0x555df62d0910[label="z"]
-	node0x555df62d0990 -> node0x555df62d0910
-	node0x555df62d0990[label="="]
-	node0x555df62d0960[label="23456"]
-	node0x555df62d0990 -> node0x555df62d0960
-	node0x555df62d0a70[label="CN"]
-	node0x555df62d0a40[label="CN"]
-	node0x555df62d0a70 -> node0x555df62d0a40
-	node0x555df62d0a40[label="CN"]
-	node0x555df62d0a10[label="print_var"]
-	node0x555df62d0a40 -> node0x555df62d0a10
-	node0x555df62d0a10[label="print_var"]
-	node0x555df62d09c0[label="z"]
-	node0x555df62d0a10 -> node0x555df62d09c0
-	node0x555df62d0b50[label="else"]
-	node0x555df62d0b20[label="CN"]
-	node0x555df62d0b50 -> node0x555df62d0b20
-	node0x555df62d0b20[label="CN"]
-	node0x555df62d0af0[label="print_var"]
-	node0x555df62d0b20 -> node0x555df62d0af0
-	node0x555df62d0af0[label="print_var"]
-	node0x555df62d0aa0[label="tttt"]
-	node0x555df62d0af0 -> node0x555df62d0aa0
+	node0x555984915d20[label="CN"]
+	node0x5559849157b0[label="var"]
+	node0x555984915d20 -> node0x5559849157b0
+	node0x5559849157b0[label="var"]
+	node0x555984915690[label="y"]
+	node0x5559849157b0 -> node0x555984915690
+	node0x5559849157b0[label="var"]
+	node0x555984915780[label="5"]
+	node0x5559849157b0 -> node0x555984915780
+	node0x555984915d20[label="CN"]
+	node0x555984915cf0[label="CN"]
+	node0x555984915d20 -> node0x555984915cf0
+	node0x555984915cf0[label="CN"]
+	node0x555984915860[label="var"]
+	node0x555984915cf0 -> node0x555984915860
+	node0x555984915860[label="var"]
+	node0x5559849157e0[label="x"]
+	node0x555984915860 -> node0x5559849157e0
+	node0x555984915860[label="var"]
+	node0x555984915830[label="2"]
+	node0x555984915860 -> node0x555984915830
+	node0x555984915cf0[label="CN"]
+	node0x555984915cc0[label="CN"]
+	node0x555984915cf0 -> node0x555984915cc0
+	node0x555984915cc0[label="CN"]
+	node0x555984915910[label="var"]
+	node0x555984915cc0 -> node0x555984915910
+	node0x555984915910[label="var"]
+	node0x555984915890[label="z"]
+	node0x555984915910 -> node0x555984915890
+	node0x555984915910[label="var"]
+	node0x5559849158e0[label="3"]
+	node0x555984915910 -> node0x5559849158e0
+	node0x555984915cc0[label="CN"]
+	node0x555984915c90[label="CN"]
+	node0x555984915cc0 -> node0x555984915c90
+	node0x555984915c90[label="CN"]
+	node0x5559849159c0[label="var"]
+	node0x555984915c90 -> node0x5559849159c0
+	node0x5559849159c0[label="var"]
+	node0x555984915940[label="tttt"]
+	node0x5559849159c0 -> node0x555984915940
+	node0x5559849159c0[label="var"]
+	node0x555984915990[label="66"]
+	node0x5559849159c0 -> node0x555984915990
+	node0x555984915c90[label="CN"]
+	node0x555984915c60[label="CN"]
+	node0x555984915c90 -> node0x555984915c60
+	node0x555984915c60[label="CN"]
+	node0x555984915c30[label="while"]
+	node0x555984915c60 -> node0x555984915c30
+	node0x555984915c30[label="while"]
+	node0x555984915a70[label="+"]
+	node0x555984915c30 -> node0x555984915a70
+	node0x555984915a70[label="+"]
+	node0x5559849159f0[label="z"]
+	node0x555984915a70 -> node0x5559849159f0
+	node0x555984915a70[label="+"]
+	node0x555984915a40[label="1"]
+	node0x555984915a70 -> node0x555984915a40
+	node0x555984915c30[label="while"]
+	node0x555984915c00[label="CN"]
+	node0x555984915c30 -> node0x555984915c00
+	node0x555984915c00[label="CN"]
+	node0x555984915b20[label="-="]
+	node0x555984915c00 -> node0x555984915b20
+	node0x555984915b20[label="-="]
+	node0x555984915aa0[label="z"]
+	node0x555984915b20 -> node0x555984915aa0
+	node0x555984915b20[label="-="]
+	node0x555984915af0[label="1"]
+	node0x555984915b20 -> node0x555984915af0
+	node0x555984915c00[label="CN"]
+	node0x555984915bd0[label="CN"]
+	node0x555984915c00 -> node0x555984915bd0
+	node0x555984915bd0[label="CN"]
+	node0x555984915ba0[label="print_var"]
+	node0x555984915bd0 -> node0x555984915ba0
+	node0x555984915ba0[label="print_var"]
+	node0x555984915b50[label="z"]
+	node0x555984915ba0 -> node0x555984915b50
 }

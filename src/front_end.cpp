@@ -22,7 +22,12 @@ void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_ta
 
     if (!node) return;
 
+    if (parent->type == TP_OPERATOR && parent->left == node  && parent->value.oper == OP_WHILE) {
+        count_while++;
+        fprintf(file, "\nlable_while_beg_%d:\n\n", count_while);
+    }
     print_asm_code(node->left, node, file, var_table);
+
     print_asm_code(node->right, node, file, var_table);
 
     print_asm_node(node, parent, file, var_table);
@@ -37,6 +42,8 @@ void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_ta
     }                                               \
 
 void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_table) {
+    
+ 
     switch (node->type) {
         case TP_OPERATOR:
             switch (node->value.oper) {
@@ -74,7 +81,9 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
             fprintf(file, "JMP lable_else_%p\n\n", parent);
             fprintf(file, "lable_if_%d:\n", count_if);
         } else if (parent->value.oper == OP_WHILE) {
-            fprintf(file, "lable_while_%d\n", count_while);
+            fprintf(file, "PUSH 0\n");
+            fprintf(file, "JE lable_while_end_%d\n", count_while);
+            // fprintf(file, "lable_while_beg_%d:\n", count_while);
         }
     } 
 }
