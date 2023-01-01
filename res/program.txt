@@ -4,9 +4,9 @@ var x = 2;
 var z = 3;
 var tttt = 66;
 
-if (z + x + y) {
+if (z + x - y) {
     print_var(z);
-} else if (z + x + 1 + y) {
+} else if (z + x - y) {
         z = 23456;
         print_var(z);
 } else {

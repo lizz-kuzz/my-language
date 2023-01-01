@@ -10,39 +10,37 @@ PUSH [2]
 PUSH [1]
 ADD
 PUSH [0]
-ADD
+SUB
 PUSH 0
-JNE lable_if_1
+JE lable_if_1
 PUSH [2]
 OUT
 
-JMP lable_else_0x5622adac9d00
+JMP lable_else_0x555df62d0be0
 
 lable_if_1:
 PUSH [2]
 PUSH [1]
 ADD
-PUSH 1
-ADD
 PUSH [0]
-ADD
+SUB
 PUSH 0
-JNE lable_if_2
+JE lable_if_2
 PUSH 23456
 POP [2]
 PUSH [2]
 OUT
 
 
-JMP lable_else_0x5622adac9c70
+JMP lable_else_0x555df62d0b50
 
 lable_if_2:
 PUSH [3]
 OUT
 
-lable_else_0x5622adac9c70:
+lable_else_0x555df62d0b50:
 
-lable_else_0x5622adac9d00:
+lable_else_0x555df62d0be0:
 
 
 

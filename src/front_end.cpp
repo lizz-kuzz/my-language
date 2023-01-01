@@ -69,7 +69,7 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
         if (parent->value.oper == OP_IF) {
             fprintf(file, "PUSH 0\n");
             count_if++;
-            fprintf(file, "JNE lable_if_%d\n", count_if);
+            fprintf(file, "JE lable_if_%d\n", count_if);
         } else if (parent->value.oper == OP_ELSE) {
             fprintf(file, "JMP lable_else_%p\n\n", parent);
             fprintf(file, "lable_if_%d:\n", count_if);
