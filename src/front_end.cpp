@@ -14,6 +14,10 @@ void printf_asm(const char *FILE_INPUT, Node *node, Variable_table *var_table) {
 
 }
 
+static int count_if = 0;
+static int count_else = 0;
+static int count_while = 0;
+
 void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_table) {
 
     if (!node) return;
@@ -21,14 +25,9 @@ void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_ta
     print_asm_code(node->left, node, file, var_table);
     print_asm_code(node->right, node, file, var_table);
 
-
     print_asm_node(node, parent, file, var_table);
     
 }
-
-static int count_if = 1;
-static int count_else = 1;
-static int count_while = 1;
 
 
 #define DEF_OPER(op, num_op, name, len_name, ...)   \
@@ -38,7 +37,6 @@ static int count_while = 1;
     }                                               \
 
 void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_table) {
-    
     switch (node->type) {
         case TP_OPERATOR:
             switch (node->value.oper) {
@@ -51,7 +49,6 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
             break;
 
         case TP_VAR:
-// табличка переменных
             if (!(parent->type == TP_OPERATOR && (parent->value.oper == OP_VAR || parent->value.oper == OP_EQU))) {
                 fprintf(file, "PUSH [%d]\n", find_var(var_table, node->value.var));
             }
@@ -68,6 +65,18 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
             break;
     }
 
+    if (parent->type == TP_OPERATOR && parent->left == node) {
+        if (parent->value.oper == OP_IF) {
+            fprintf(file, "PUSH 0\n");
+            count_if++;
+            fprintf(file, "JNE lable_if_%d\n", count_if);
+        } else if (parent->value.oper == OP_ELSE) {
+            fprintf(file, "JMP lable_else_%p\n\n", parent);
+            fprintf(file, "lable_if_%d:\n", count_if);
+        } else if (parent->value.oper == OP_WHILE) {
+            fprintf(file, "lable_while_%d\n", count_while);
+        }
+    } 
 }
 
 #undef DEF_OPER

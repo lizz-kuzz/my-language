@@ -2,14 +2,34 @@
 00002    b0         0                  POP
 00004    21         2                 PUSH
 00006    b0         1                  POP
-00008    21         1                 PUSH
+00008    21         3                 PUSH
 00010    b0         2                  POP
 00012    21        66                 PUSH
 00014    b0         3                  POP
 00016    a1         2                 PUSH
-00018    06                           OUT
-00019    a1         2                 PUSH
-00021    07                            IN
-00022    a1         2                 PUSH
-00024    06                           OUT
-00025    00                           HLT
+00018    a1         1                 PUSH
+00020    02                           ADD
+00021    a1         0                 PUSH
+00023    02                           ADD
+00024    21         0                 PUSH
+00026    0f        33                  JNE
+00028    a1         2                 PUSH
+00030    06                           OUT
+00031    08        60                  JMP
+00033    a1         2                 PUSH
+00035    a1         1                 PUSH
+00037    02                           ADD
+00038    21         1                 PUSH
+00040    02                           ADD
+00041    a1         0                 PUSH
+00043    02                           ADD
+00044    21         0                 PUSH
+00046    0f        57                  JNE
+00048    21     23456                 PUSH
+00050    b0         2                  POP
+00052    a1         2                 PUSH
+00054    06                           OUT
+00055    08        60                  JMP
+00057    a1         3                 PUSH
+00059    06                           OUT
+00060    00                           HLT

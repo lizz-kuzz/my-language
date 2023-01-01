@@ -1,12 +1,18 @@
 
 var y = 5;
 var x = 2;
-var z = 1;
+var z = 3;
 var tttt = 66;
 
+if (z + x + y) {
+    print_var(z);
+} else if (z + x + 1 + y) {
+        z = 23456;
+        print_var(z);
+} else {
+        print_var(tttt);
+}
 
-print_var(z);
-scan(z);
-print_var(z);
+
 
 

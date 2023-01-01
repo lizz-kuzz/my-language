@@ -84,44 +84,39 @@ DEF_OPER(OP_EQU, 10, "=", 1,
 
 DEF_OPER(OP_LEFT_BRACKET, 13, "(", 1,
             {
-            fprintf(file, "\n");
             })
 
 DEF_OPER(OP_RIGHT_BRACKET, 14, ")", 1, 
             {
-            fprintf(file, "\n");
             })
 
 DEF_OPER(OP_END_LINE, 15, ";", 1, 
             {
-            fprintf(file, "\n");
             })
 
 DEF_OPER(OP_IF, 16, "if", 2,
             {
-            fprintf(file, "lable_if_%d\n", count_if);
-            count_if++;
+            if (node->right->type == TP_OPERATOR && node->right->value.oper != OP_ELSE) {
+                fprintf(file, "lable_if_%d:\n", count_if);
+            }
             })
 
 DEF_OPER(OP_ELSE, 17, "else", 4,
             {
-            fprintf(file, "lable_else_%d\n", count_else);
-            count_else++;
+            fprintf(file, "lable_else_%p:\n", node);
             })
 
 DEF_OPER(OP_LEFT_FIGURE_BRACKET, 18, "{", 1, 
             {
-            fprintf(file, "\n");
             })
 
 DEF_OPER(OP_RIGHT_FIGURE_BRACKET, 19, "}", 1, 
             {
-            fprintf(file, "\n");
             })
 
 DEF_OPER(OP_WHILE, 20, "while", 5,
             {
-            fprintf(file, "lable_while_%d\n", count_while);
+            // fprintf(file, "lable_while_%d\n", count_while);
             count_while++;
             })
 
