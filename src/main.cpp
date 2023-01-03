@@ -1,6 +1,8 @@
 #include "../include/file.hpp"
 #include "../include/back_end.hpp"
 #include "../include/front_end.hpp"
+#include "../include/middle_end.hpp"
+
 
 int main(int argc, char *argv[]) {
     
@@ -15,14 +17,18 @@ int main(int argc, char *argv[]) {
     Variable_table var_table = {};
 
     var_table.capacity = ctor_tree(FILE_INPUT, &tree);
-    // printf("%d", tree.root_tree->type);
     ctor_var_table(&var_table);
     dump_tree(tree.root_tree);
     printf_asm(FILE_ASM, tree.root_tree, &var_table);
-    for (int i = 0; i < var_table.size; i++) {
-        printf("'%s' [%d]\n", var_table.arr[i].name_var, var_table.arr[i].id);
-    }
+    optimizer_tree(tree.root_tree);
+
+    // for (int i = 0; i < var_table.size; i++) {
+    //     printf("'%s' [%d]\n", var_table.arr[i].name_var, var_table.arr[i].id);
+    // }
+
     close_file();
+
+    // dtor_tree(tree.root_tree);
 
     system("./ass.exe asm_output.txt");
     system("./cpu.exe");

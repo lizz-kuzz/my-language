@@ -26,7 +26,7 @@ enum TYPE_NODE {
 };
 
 union data {
-    TYPE_OPERATOR  oper;
+    TYPE_OPERATOR   oper;
     int             number;
     char *          var;
 };
@@ -62,14 +62,15 @@ grammar =
 
 */
 // TODO: 2. сделать оптимизацию(удаление узлов cn с одной веткой, упрощение выраженний, свертывание циклов и условных операций)
-//       1. сделать асм код для условных операций и циклов
-//       3. написать факториал и квадратку
+//       3. написать квадратку
 //       4. останется время написать функции 
 // -------------------------------------BEGIN RECURSIVE DESCENT FUNC---------------------------------------------------
 
 Node *get_grammar(Tokenizer *tokens);
 
 Node *get_decl_func(Tokenizer *tokens);
+
+Node *get_exit(Tokenizer *tokens);
 
 Node *get_type(Tokenizer *tokens);
 
@@ -126,7 +127,7 @@ Node *create_tree_from_text(Node *node, char **text_buf);
 
 int   ctor_tree(const char *FILE_INPUT, Tree *tree);
 
-void dtor_tree(Node *node);
+void  dtor_tree(Node *node);
 
 Node *tree_add_elem(Node *node, char *elem);
 
@@ -154,7 +155,6 @@ void close_file();
 
 //------------------------------------BEGIN DIFFERENTIATOR FUNC-----------------------------------------------------------
 
-Node *diff_tree(Node *node);
 
 Node *copy_tree(Node *node); 
 
@@ -163,19 +163,9 @@ Node *create_node(TYPE_NODE tp_node, int value, Node *node_left, Node *node_righ
 Node *create_var_node(char *var, Node *node_left, Node *node_right);
 
 Node *create_func_node(char *var, Node *node_left, Node *node_right);
+
 //-----------------------------------------END DIFFERENTIATOR FUNC-----------------------------------------------------------
 
-
-
-//-----------------------------------------BEGIN OPTIMIZER FUNC--------------------------------------------------------------
-
-void optimizer_tree(Node *node);
-
-int folding_constant(Node *node, int *continue_optimiz);
-
-int pow(int x, int y);
-
-//-----------------------------------------END OPTIMIZER FUNC------------------------------------------
 
 
 #endif

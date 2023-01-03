@@ -1,27 +1,34 @@
 00000    21         0                 PUSH
 00002    b0         0                  POP
-00004    07                            IN
-00005    b0         0                  POP
-00007    a1         0                 PUSH
-00009    b0         1                  POP
-00011    a1         1                 PUSH
-00013    21         0                 PUSH
-00015    0e        45                   JE
-00017    a1         1                 PUSH
-00019    21         1                 PUSH
-00021    50         1                  POP
-00023    a1         1                 PUSH
-00025    41         1                 PUSH
-00027    03                           SUB
-00028    b0         1                  POP
-00030    a1         1                 PUSH
-00032    21         0                 PUSH
-00034    0e        43                   JE
-00036    a1         0                 PUSH
-00038    a1         1                 PUSH
-00040    04                           MUL
-00041    b0         0                  POP
-00043    08        11                  JMP
+00004    21         1                 PUSH
+00006    21        20                 PUSH
+00008    03                           SUB
+00009    21        13                 PUSH
+00011    21        33                 PUSH
+00013    04                           MUL
+00014    02                           ADD
+00015    a1         0                 PUSH
+00017    02                           ADD
+00018    b0         1                  POP
+00020    21         0                 PUSH
+00022    21         0                 PUSH
+00024    0e        54                   JE
+00026    a1         1                 PUSH
+00028    21         1                 PUSH
+00030    50         1                  POP
+00032    a1         1                 PUSH
+00034    41         1                 PUSH
+00036    03                           SUB
+00037    b0         1                  POP
+00039    a1         1                 PUSH
+00041    21         0                 PUSH
+00043    0e        52                   JE
 00045    a1         0                 PUSH
-00047    06                           OUT
-00048    00                           HLT
+00047    a1         1                 PUSH
+00049    04                           MUL
+00050    b0         0                  POP
+00052    08        20                  JMP
+00054    00                           HLT
+00055    a1         1                 PUSH
+00057    06                           OUT
+00058    00                           HLT

@@ -142,6 +142,11 @@ DEF_OPER(OP_PRINT_STR, 25, "print_str", 9,
             fprintf(file, "OUT_CHAR\n");
             })
 
+DEF_OPER(OP_EXIT, 26, "exit", 4, 
+            {
+            fprintf(file, "HLT\n");
+            })
+
 
 
 

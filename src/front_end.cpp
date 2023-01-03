@@ -106,7 +106,6 @@ int find_var(Variable_table *var_table, char *var) {
     for (int i = 0; i < var_table->size; i++) {
         if (strcmp(var_table->arr[i].name_var, var) == 0) {
             id = var_table->arr[i].id;
-            printf("%d\n", id);
             break;
         }
     }
