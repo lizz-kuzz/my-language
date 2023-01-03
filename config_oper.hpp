@@ -5,9 +5,9 @@ DEF_OPER(OP_CONNECT, 0, "CN", 1,
 
 DEF_OPER(OP_SUB_EQU, 11, "-=", 2,
             {
-            fprintf(file, "POP [ax]\n");
+            fprintf(file, "POP ax\n");
             fprintf(file, "PUSH [%d]\n", find_var(var_table, node->left->value.var));
-            fprintf(file, "PUSH [ax]\n");
+            fprintf(file, "PUSH ax\n");
             fprintf(file, "SUB\n");
             fprintf(file, "POP [%d]\n", find_var(var_table, node->left->value.var));
             })
@@ -128,6 +128,7 @@ DEF_OPER(OP_RET, 22, "return", 6, )
 DEF_OPER(OP_SCAN, 23, "scan", 4, 
             {
             fprintf(file, "IN\n");
+            fprintf(file, "POP [%d]\n", find_var(var_table, node->left->value.var));
             })
 
 DEF_OPER(OP_PRINT_VAR, 24, "print_var", 9, 

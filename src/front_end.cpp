@@ -26,6 +26,7 @@ void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_ta
         count_while++;
         fprintf(file, "\nlable_while_beg_%d:\n\n", count_while);
     }
+
     print_asm_code(node->left, node, file, var_table);
 
     print_asm_code(node->right, node, file, var_table);
@@ -56,7 +57,9 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
             break;
 
         case TP_VAR:
-            if (!(parent->type == TP_OPERATOR && (parent->value.oper == OP_VAR || parent->value.oper == OP_EQU))) {
+            if (!(parent->type == TP_OPERATOR && (parent->value.oper == OP_VAR || parent->value.oper == OP_EQU || parent->value.oper == OP_SCAN))) {
+                fprintf(file, "PUSH [%d]\n", find_var(var_table, node->value.var));
+            } else if (parent->type == TP_OPERATOR && parent->right == node && (parent->value.oper == OP_VAR || parent->value.oper == OP_EQU)) {
                 fprintf(file, "PUSH [%d]\n", find_var(var_table, node->value.var));
             }
             break;

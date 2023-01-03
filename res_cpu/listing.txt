@@ -1,24 +1,27 @@
-00000    21         5                 PUSH
+00000    21         0                 PUSH
 00002    b0         0                  POP
-00004    21         2                 PUSH
-00006    b0         1                  POP
-00008    21         3                 PUSH
-00010    b0         2                  POP
-00012    21        66                 PUSH
-00014    b0         3                  POP
-00016    a1         2                 PUSH
-00018    21         1                 PUSH
-00020    02                           ADD
-00021    21         0                 PUSH
-00023    0e        43                   JE
-00025    a1         2                 PUSH
-00027    21         1                 PUSH
-00029    d0         1                  POP
-00031    a1         2                 PUSH
-00033    c1         1                 PUSH
-00035    03                           SUB
-00036    b0         2                  POP
-00038    a1         2                 PUSH
-00040    06                           OUT
-00041    08        16                  JMP
-00043    00                           HLT
+00004    07                            IN
+00005    b0         0                  POP
+00007    a1         0                 PUSH
+00009    b0         1                  POP
+00011    a1         1                 PUSH
+00013    21         0                 PUSH
+00015    0e        45                   JE
+00017    a1         1                 PUSH
+00019    21         1                 PUSH
+00021    50         1                  POP
+00023    a1         1                 PUSH
+00025    41         1                 PUSH
+00027    03                           SUB
+00028    b0         1                  POP
+00030    a1         1                 PUSH
+00032    21         0                 PUSH
+00034    0e        43                   JE
+00036    a1         0                 PUSH
+00038    a1         1                 PUSH
+00040    04                           MUL
+00041    b0         0                  POP
+00043    08        11                  JMP
+00045    a1         0                 PUSH
+00047    06                           OUT
+00048    00                           HLT

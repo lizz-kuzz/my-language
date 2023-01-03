@@ -233,7 +233,6 @@ Node *get_in_out_put(Tokenizer *tokens) {
             
             assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper SCAN");
             assert(tokens->array[tokens->size++].oper == OP_END_LINE && "sintax error: you forgot ';' in oper SCAN");
-
         } else if (op == OP_PRINT_VAR) {
 
             assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper PRINT");

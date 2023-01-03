@@ -1,83 +1,89 @@
 digraph {
-	node0x555984915d20[label="CN"]
-	node0x5559849157b0[label="var"]
-	node0x555984915d20 -> node0x5559849157b0
-	node0x5559849157b0[label="var"]
-	node0x555984915690[label="y"]
-	node0x5559849157b0 -> node0x555984915690
-	node0x5559849157b0[label="var"]
-	node0x555984915780[label="5"]
-	node0x5559849157b0 -> node0x555984915780
-	node0x555984915d20[label="CN"]
-	node0x555984915cf0[label="CN"]
-	node0x555984915d20 -> node0x555984915cf0
-	node0x555984915cf0[label="CN"]
-	node0x555984915860[label="var"]
-	node0x555984915cf0 -> node0x555984915860
-	node0x555984915860[label="var"]
-	node0x5559849157e0[label="x"]
-	node0x555984915860 -> node0x5559849157e0
-	node0x555984915860[label="var"]
-	node0x555984915830[label="2"]
-	node0x555984915860 -> node0x555984915830
-	node0x555984915cf0[label="CN"]
-	node0x555984915cc0[label="CN"]
-	node0x555984915cf0 -> node0x555984915cc0
-	node0x555984915cc0[label="CN"]
-	node0x555984915910[label="var"]
-	node0x555984915cc0 -> node0x555984915910
-	node0x555984915910[label="var"]
-	node0x555984915890[label="z"]
-	node0x555984915910 -> node0x555984915890
-	node0x555984915910[label="var"]
-	node0x5559849158e0[label="3"]
-	node0x555984915910 -> node0x5559849158e0
-	node0x555984915cc0[label="CN"]
-	node0x555984915c90[label="CN"]
-	node0x555984915cc0 -> node0x555984915c90
-	node0x555984915c90[label="CN"]
-	node0x5559849159c0[label="var"]
-	node0x555984915c90 -> node0x5559849159c0
-	node0x5559849159c0[label="var"]
-	node0x555984915940[label="tttt"]
-	node0x5559849159c0 -> node0x555984915940
-	node0x5559849159c0[label="var"]
-	node0x555984915990[label="66"]
-	node0x5559849159c0 -> node0x555984915990
-	node0x555984915c90[label="CN"]
-	node0x555984915c60[label="CN"]
-	node0x555984915c90 -> node0x555984915c60
-	node0x555984915c60[label="CN"]
-	node0x555984915c30[label="while"]
-	node0x555984915c60 -> node0x555984915c30
-	node0x555984915c30[label="while"]
-	node0x555984915a70[label="+"]
-	node0x555984915c30 -> node0x555984915a70
-	node0x555984915a70[label="+"]
-	node0x5559849159f0[label="z"]
-	node0x555984915a70 -> node0x5559849159f0
-	node0x555984915a70[label="+"]
-	node0x555984915a40[label="1"]
-	node0x555984915a70 -> node0x555984915a40
-	node0x555984915c30[label="while"]
-	node0x555984915c00[label="CN"]
-	node0x555984915c30 -> node0x555984915c00
-	node0x555984915c00[label="CN"]
-	node0x555984915b20[label="-="]
-	node0x555984915c00 -> node0x555984915b20
-	node0x555984915b20[label="-="]
-	node0x555984915aa0[label="z"]
-	node0x555984915b20 -> node0x555984915aa0
-	node0x555984915b20[label="-="]
-	node0x555984915af0[label="1"]
-	node0x555984915b20 -> node0x555984915af0
-	node0x555984915c00[label="CN"]
-	node0x555984915bd0[label="CN"]
-	node0x555984915c00 -> node0x555984915bd0
-	node0x555984915bd0[label="CN"]
-	node0x555984915ba0[label="print_var"]
-	node0x555984915bd0 -> node0x555984915ba0
-	node0x555984915ba0[label="print_var"]
-	node0x555984915b50[label="z"]
-	node0x555984915ba0 -> node0x555984915b50
+	node0x561bf7793270[label="CN"]
+	node0x561bf7792c20[label="var"]
+	node0x561bf7793270 -> node0x561bf7792c20
+	node0x561bf7792c20[label="var"]
+	node0x561bf7792ba0[label="number"]
+	node0x561bf7792c20 -> node0x561bf7792ba0
+	node0x561bf7792c20[label="var"]
+	node0x561bf7792bf0[label="0"]
+	node0x561bf7792c20 -> node0x561bf7792bf0
+	node0x561bf7793270[label="CN"]
+	node0x561bf7793240[label="CN"]
+	node0x561bf7793270 -> node0x561bf7793240
+	node0x561bf7793240[label="CN"]
+	node0x561bf7792ca0[label="scan"]
+	node0x561bf7793240 -> node0x561bf7792ca0
+	node0x561bf7792ca0[label="scan"]
+	node0x561bf7792c50[label="number"]
+	node0x561bf7792ca0 -> node0x561bf7792c50
+	node0x561bf7793240[label="CN"]
+	node0x561bf7793210[label="CN"]
+	node0x561bf7793240 -> node0x561bf7793210
+	node0x561bf7793210[label="CN"]
+	node0x561bf7792d70[label="var"]
+	node0x561bf7793210 -> node0x561bf7792d70
+	node0x561bf7792d70[label="var"]
+	node0x561bf7792cd0[label="i"]
+	node0x561bf7792d70 -> node0x561bf7792cd0
+	node0x561bf7792d70[label="var"]
+	node0x561bf7792d20[label="number"]
+	node0x561bf7792d70 -> node0x561bf7792d20
+	node0x561bf7793210[label="CN"]
+	node0x561bf77931e0[label="CN"]
+	node0x561bf7793210 -> node0x561bf77931e0
+	node0x561bf77931e0[label="CN"]
+	node0x561bf7793100[label="while"]
+	node0x561bf77931e0 -> node0x561bf7793100
+	node0x561bf7793100[label="while"]
+	node0x561bf7792da0[label="i"]
+	node0x561bf7793100 -> node0x561bf7792da0
+	node0x561bf7793100[label="while"]
+	node0x561bf77930d0[label="CN"]
+	node0x561bf7793100 -> node0x561bf77930d0
+	node0x561bf77930d0[label="CN"]
+	node0x561bf7792e70[label="-="]
+	node0x561bf77930d0 -> node0x561bf7792e70
+	node0x561bf7792e70[label="-="]
+	node0x561bf7792df0[label="i"]
+	node0x561bf7792e70 -> node0x561bf7792df0
+	node0x561bf7792e70[label="-="]
+	node0x561bf7792e40[label="1"]
+	node0x561bf7792e70 -> node0x561bf7792e40
+	node0x561bf77930d0[label="CN"]
+	node0x561bf77930a0[label="CN"]
+	node0x561bf77930d0 -> node0x561bf77930a0
+	node0x561bf77930a0[label="CN"]
+	node0x561bf7793070[label="if"]
+	node0x561bf77930a0 -> node0x561bf7793070
+	node0x561bf7793070[label="if"]
+	node0x561bf7792ea0[label="i"]
+	node0x561bf7793070 -> node0x561bf7792ea0
+	node0x561bf7793070[label="if"]
+	node0x561bf7793040[label="CN"]
+	node0x561bf7793070 -> node0x561bf7793040
+	node0x561bf7793040[label="CN"]
+	node0x561bf7793010[label="="]
+	node0x561bf7793040 -> node0x561bf7793010
+	node0x561bf7793010[label="="]
+	node0x561bf7792ef0[label="number"]
+	node0x561bf7793010 -> node0x561bf7792ef0
+	node0x561bf7793010[label="="]
+	node0x561bf7792fe0[label="*"]
+	node0x561bf7793010 -> node0x561bf7792fe0
+	node0x561bf7792fe0[label="*"]
+	node0x561bf7792f40[label="number"]
+	node0x561bf7792fe0 -> node0x561bf7792f40
+	node0x561bf7792fe0[label="*"]
+	node0x561bf7792f90[label="i"]
+	node0x561bf7792fe0 -> node0x561bf7792f90
+	node0x561bf77931e0[label="CN"]
+	node0x561bf77931b0[label="CN"]
+	node0x561bf77931e0 -> node0x561bf77931b0
+	node0x561bf77931b0[label="CN"]
+	node0x561bf7793180[label="print_var"]
+	node0x561bf77931b0 -> node0x561bf7793180
+	node0x561bf7793180[label="print_var"]
+	node0x561bf7793130[label="number"]
+	node0x561bf7793180 -> node0x561bf7793130
 }

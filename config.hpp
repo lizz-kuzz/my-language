@@ -50,7 +50,6 @@ DEF_CMD(OUT, 6, 0,
 DEF_CMD(IN, 7, 0,
         {
         int a = 0;
-        printf("fff\n");
         scanf("%d", &a);
         PUSH_(a);
         })

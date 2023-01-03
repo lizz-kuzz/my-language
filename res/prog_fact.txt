@@ -1,4 +1,3 @@
-
 var number = 0;
 scan(number);
 
