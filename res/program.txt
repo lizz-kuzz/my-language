@@ -1,10 +1,11 @@
 decl main() {
-   var aaaaa = -3;
-   print_var(aaaaa);
+   var a = -3;
+   var t = 6;
+   print_var(a);
+   a = lol();
 }
 
 decl lol() {
-   var loolll = -2345678;
+   var loolll = -9;
    return loolll;
 }
-

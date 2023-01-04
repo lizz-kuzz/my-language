@@ -44,83 +44,6 @@ int ctor_tree(const char *FILE_INPUT, Tree *tree) {
     return capacity;
 }
 
-Node *create_tree_from_text(Node *node, char **text_buf) {
-
-    if (**text_buf == '\0') return node;
-
-
-    if (**text_buf == '(') {
-        node->left = (Node *) calloc(1, sizeof(Node));
-        (*text_buf)++;
-        node->left = create_tree_from_text(node->left, text_buf);
-    }
-
-    char *elem = (char *) calloc(MAX_SIZE, sizeof(char));
-    char *point = elem;
-
-    for (; **text_buf != ')' && **text_buf != '(' && **text_buf != '\0' && **text_buf != '\n'; (*text_buf)++, elem++) *elem = **text_buf; 
-    elem = point;
-
-    node = tree_add_elem(node, elem);
-
-    if (**text_buf == '(') { 
-        (*text_buf)++;
-        node->right = (Node *) calloc(1, sizeof(Node));
-        node->right = create_tree_from_text(node->right, text_buf);
-    }
-
-    if (**text_buf == ')') {
-        (*text_buf)++; 
-        return node;
-    }
-  
-    return node;
-}
-
-Node *tree_add_elem(Node *node, char *elem) {
-
-    assert(node && "null node");
-
-    if (isdigit(*elem)) {
-        node->type = TP_NUMBER;
-        node->value.number = atoi(elem); 
-    } else {
-        switch (*elem) {
-            case OP_ADD: {
-                node->type = TP_OPERATOR;
-                node->value.oper  = OP_ADD;
-                break;
-            } case OP_SUB: {
-                node->type = TP_OPERATOR;
-                node->value.oper  = OP_SUB;
-                break;
-            } case OP_DIV: {
-                node->type = TP_OPERATOR;
-                node->value.oper  = OP_DIV;
-                break;
-            } case OP_MUL: {
-                node->type = TP_OPERATOR;
-                node->value.oper  = OP_MUL;
-                break;
-            } case OP_DEG: {
-                node->type = TP_OPERATOR;
-                node->value.oper  = OP_DEG;
-                break;           
-            } case (OP_LN): { 
-                node->type = TP_OPERATOR;
-                node->value.oper  = OP_LN;
-                node->left = NULL;
-                break;
-            } default: {
-                node->type = TP_VAR;
-                node->value.var = (char *) calloc(MAX_SIZE, sizeof(char));
-                node->value.var = strcpy(node->value.var, elem);
-                break;
-            }
-        }
-    }
-    return node;
-}
 
 void dtor_tree(Node *node) {
 
@@ -135,6 +58,91 @@ void dtor_tree(Node *node) {
     if (node->type == TP_VAR) free(node->value.var);
     free(node);
 }
+
+
+Node *copy_tree(Node *node) {
+
+    if (!node) return node;
+
+    Node *copy_node = (Node *) calloc(1, sizeof(Node));
+
+    copy_node->left      = node->left;
+    copy_node->right     = node->right;
+    copy_node->value     = node->value;
+    copy_node->right     = node->right;
+    copy_node->type      = node->type;
+
+    if (node->left) {
+        copy_node->left = copy_tree(copy_node->left);
+    }
+
+    if (node->right) {
+        copy_node->right = copy_tree(copy_node->right);
+    }
+
+    return copy_node;
+
+}
+
+Node *create_node(TYPE_NODE tp_node, int value, Node *node_left, Node *node_right) {
+    
+    Node *node = (Node *)calloc(1, sizeof(Node));
+
+    node->type = tp_node;
+    node->left = node_left;
+    node->right = node_right;
+
+    switch (tp_node) {
+        case TP_NUMBER: {
+            node->value.number = value;
+            break;
+        }
+
+        case TP_OPERATOR: {
+            node->value.oper = (TYPE_OPERATOR)value;
+            break;
+        }
+
+        case TP_VAR: {
+            break;
+        }
+
+        default:
+            printf("didn't find type node\n");
+            break;
+    }
+
+    return node;
+}
+
+Node *create_var_node(char *var, Node *node_left, Node *node_right) {
+
+    Node *node = (Node *)calloc(1, sizeof(Node));
+
+    node->type = TP_VAR;
+    node->left = node_left;
+    node->right = node_right;
+
+    node->value.var = (char *) calloc(strlen(var), sizeof(char));
+    node->value.var = strcpy(node->value.var, var);
+
+    return node;
+}
+
+Node *create_func_node(char *name_func, Node *node_left, Node *node_right) {
+
+    Node *node = (Node *) calloc(1, sizeof(Node));
+
+    node->type = TP_FUNC;
+    node->left = node_left;
+    node->right = node_right;
+
+    node->value.var = (char *) calloc(strlen(name_func), sizeof(char));
+    node->value.var = strcpy(node->value.var, name_func);
+
+    return node;
+}
+
 // -------------------------------------END TREE FUNCTIONS------------------------------------------------------------
 
 
@@ -159,17 +167,13 @@ Node *get_decl_func(Tokenizer *tokens) {
 
         tokens->size++;
 
-        char *name_func = (char *) calloc(strlen(tokens->array[tokens->size].elem), sizeof(char));
-        name_func = strcpy(name_func, tokens->array[tokens->size++].elem);
 
-        assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
-        assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
-
-        
-        node = create_func_node(name_func, NULL, get_body(tokens));
-
-        free(name_func);
+        node = get_func(tokens);
+  
+        node->right = get_body(tokens);
+    
         node = create_node(TP_OPERATOR, OP_DEC_FUNC, node, get_decl_func(tokens));
+
     }
 
     return node;
@@ -361,7 +365,7 @@ Node *get_body(Tokenizer *tokens) {
 
         tokens->size++;
         node = get_type(tokens);
-
+   
         assert(tokens->array[tokens->size].oper == OP_RIGHT_FIGURE_BRACKET && "sintax erorr: you forgot } in body");
         tokens->size++;
     }
@@ -403,14 +407,29 @@ Node *get_assignment(Tokenizer *tokens) {
 
     Node *node_r = get_var(tokens);
     Node *node = NULL;
+    Node *node_l = NULL;
+
+
 
     if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))) {
         
         int op =  tokens->array[tokens->size].oper;
         tokens->size++;
 
-        Node *node_l = get_add_sub(tokens);
 
+        tokens->size++;
+        if (tokens->array[tokens->size].oper == OP_LEFT_BRACKET) {
+            tokens->size--;
+            node_l = get_func(tokens);
+
+        } else {
+
+            tokens->size--;
+            node_l = get_add_sub(tokens);
+
+
+        }
+        
         node_r = create_node(TP_OPERATOR, op, node_r, node_l);
 
         tokens->size++;
@@ -554,6 +573,29 @@ Node *get_number(Tokenizer *tokens) {
     return node;
 }
 
+Node *get_func(Tokenizer *tokens) {
+    Node *node = NULL;
+
+    node = create_func_node(tokens->array[tokens->size].elem, NULL, NULL);
+    tokens->size++;  
+
+    assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
+    assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
+
+    // printf("\n\n");
+
+    // for (int i = tokens->size; i < tokens->capacity; i++) {
+    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    // }
+
+    // printf("\n");
+ 
+          
+    assert(node != NULL);
+    return node;
+
+}
+
 
 Node *get_var(Tokenizer *tokens) {
 
@@ -616,6 +658,7 @@ void create_var_token(Tokenizer *tokens, char **text_buf, int ip) {
         strcpy(tokens->array[i].elem, mean);                            \
         text_buf += len;                                                \
     } else                                                              \
+
 
 void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
 
@@ -709,7 +752,7 @@ void print_node(FILE *file, Node *node) {
 
             break;
         } case TP_FUNC: {
-            fprintf(file, "style=filled, fillcolor=\"#6ba3f0\", label=\"%s\"", node->value.var);
+            fprintf(file, "style=filled, fillcolor=\"#ad83d8\", label=\"%s\"", node->value.var);
             break;
         }
 
@@ -771,94 +814,5 @@ void graph_dump(FILE *dot_file, Node *node, Node *node_son) {
 }
 
 //--------------------------------------END TREE OUNPUT----------------------------------------------------------
-
-
-//------------------------------------BEGIN DIFFERENTIATOR-----------------------------------------------------------
-
-
-Node *copy_tree(Node *node) {
-
-    if (!node) return node;
-
-    Node *copy_node = (Node *) calloc(1, sizeof(Node));
-
-    copy_node->left      = node->left;
-    copy_node->right     = node->right;
-    copy_node->value     = node->value;
-    copy_node->right     = node->right;
-    copy_node->type   = node->type;
-
-    if (node->left) {
-        copy_node->left = copy_tree(copy_node->left);
-    }
-
-    if (node->right) {
-        copy_node->right = copy_tree(copy_node->right);
-    }
-
-    return copy_node;
-
-}
-
-Node *create_node(TYPE_NODE tp_node, int value, Node *node_left, Node *node_right) {
-    
-    Node *node = (Node *)calloc(1, sizeof(Node));
-
-    node->type = tp_node;
-    node->left = node_left;
-    node->right = node_right;
-
-    switch (tp_node) {
-        case TP_NUMBER: {
-            node->value.number = value;
-            break;
-        }
-
-        case TP_OPERATOR: {
-            node->value.oper = (TYPE_OPERATOR)value;
-            break;
-        }
-
-        case TP_VAR: {
-            break;
-        }
-
-        default:
-            printf("didn't find type node\n");
-            break;
-    }
-
-    return node;
-}
-
-Node *create_var_node(char *var, Node *node_left, Node *node_right) {
-
-    Node *node = (Node *)calloc(1, sizeof(Node));
-
-    node->type = TP_VAR;
-    node->left = node_left;
-    node->right = node_right;
-
-    node->value.var = (char *) calloc(strlen(var), sizeof(char));
-    node->value.var = strcpy(node->value.var, var);
-
-    return node;
-}
-
-Node *create_func_node(char *name_func, Node *node_left, Node *node_right) {
-
-    Node *node = (Node *) calloc(1, sizeof(Node));
-
-    node->type = TP_FUNC;
-    node->left = node_left;
-    node->right = node_right;
-
-    node->value.var = (char *) calloc(strlen(name_func), sizeof(char));
-    node->value.var = strcpy(node->value.var, name_func);
-
-    return node;
-}
-
-//-----------------------------------------END DIFFERENTIATOR-----------------------------------------------------------
 
 

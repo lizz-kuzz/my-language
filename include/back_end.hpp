@@ -61,7 +61,7 @@ grammar =
 
 
 */
-// TODO: 2. сделать оптимизацию(удаление узлов cn с одной веткой, упрощение выраженний, свертывание циклов и условных операций)
+// TODO:
 //       3. написать квадратку
 //       4. останется время написать функции 
 // -------------------------------------BEGIN RECURSIVE DESCENT FUNC---------------------------------------------------
@@ -102,6 +102,8 @@ Node *get_number(Tokenizer *tokens);
 
 Node *get_var(Tokenizer *tokens);
 
+Node *get_func(Tokenizer *tokens);
+
 // -------------------------------------END RECURSIVE DESCENT FUNC---------------------------------------------------
 
 
@@ -125,13 +127,18 @@ int  is_oper(char symbol);
 
 // -------------------------------------BEGIN TREE FUNCTIONS--------------------------------------
 
-Node *create_tree_from_text(Node *node, char **text_buf);
-
 int   ctor_tree(const char *FILE_INPUT, Tree *tree);
 
 void  dtor_tree(Node *node);
 
-Node *tree_add_elem(Node *node, char *elem);
+Node *copy_tree(Node *node); 
+
+Node *create_node(TYPE_NODE tp_node, int value, Node *node_left, Node *node_right);
+
+Node *create_var_node(char *var, Node *node_left, Node *node_right);
+
+Node *create_func_node(char *var, Node *node_left, Node *node_right);
+
 
 // -------------------------------------END TREE FUNCTIONS------------------------------------------------------------
 
@@ -148,19 +155,6 @@ void graph_dump(FILE *dot_file, Node *node, Node *node_son);
 //--------------------------------------END TREE OUNPUT FUNC----------------------------------------------------------
 
 
-
-//------------------------------------BEGIN DIFFERENTIATOR FUNC-----------------------------------------------------------
-
-
-Node *copy_tree(Node *node); 
-
-Node *create_node(TYPE_NODE tp_node, int value, Node *node_left, Node *node_right);
-
-Node *create_var_node(char *var, Node *node_left, Node *node_right);
-
-Node *create_func_node(char *var, Node *node_left, Node *node_right);
-
-//-----------------------------------------END DIFFERENTIATOR FUNC-----------------------------------------------------------
 
 
 

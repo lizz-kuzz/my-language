@@ -1,15 +1,17 @@
-var number = 0;
-scan(number);
+decl main() {
+   var number = 0;
+   scan(number);
 
 
-var i = number;
+   var i = number;
 
-while (i) {
-   i -= 1;
+   while (i) {
+      i -= 1;
 
-   if (i) {
-        number = number * i;
+      if (i) {
+         number = number * i;
+      }
    }
-}
 
-print_var(number);
+   print_var(number);
+}

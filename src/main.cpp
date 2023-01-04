@@ -19,15 +19,15 @@ int main(int argc, char *argv[]) {
     var_table.capacity = ctor_tree(FILE_INPUT, &tree);
     dump_tree(tree.root_tree);
     optimizer_tree(tree.root_tree);
-    ctor_var_table(&var_table);
-    printf_asm(FILE_ASM, tree.root_tree, &var_table);
+    // ctor_var_table(&var_table);
+    // printf_asm(FILE_ASM, tree.root_tree, &var_table);
 
     // for (int i = 0; i < var_table.size; i++) {
     //     printf("'%s' [%d]\n", var_table.arr[i].name_var, var_table.arr[i].id);
     // }
 
 
-    // dtor_tree(tree.root_tree);
+    dtor_tree(tree.root_tree);
 
     // system("./ass.exe asm_output.txt");
     // system("./cpu.exe");
