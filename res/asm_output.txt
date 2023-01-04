@@ -1,46 +1,11 @@
-PUSH 0
+PUSH -3
 POP [0]
-PUSH 1
-PUSH 20
-SUB
-PUSH 13
-PUSH 33
-MUL
-ADD
 PUSH [0]
-ADD
-POP [1]
-
-lable_while_beg_1:
-
-PUSH 0
-PUSH 0
-JE lable_while_end_1
-PUSH [1]
-PUSH 1
-POP ax
-PUSH [1]
-PUSH ax
-SUB
-POP [1]
-PUSH [1]
-PUSH 0
-JE lable_if_1
-PUSH [0]
-PUSH [1]
-MUL
-POP [0]
-
-lable_if_1:
-
-
-JMP lable_while_beg_1
-lable_while_end_1:
-HLT
-PUSH [1]
 OUT
 
 
-
+PUSH -2345678
+POP [1]
+PUSH [1]
 
 HLT

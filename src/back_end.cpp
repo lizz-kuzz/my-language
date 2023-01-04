@@ -5,7 +5,6 @@
 const char *NAME_GRAPH_FILE = "res/graph.dot";
 const char *NAME_FILE =       "res/text_output.txt";
 
-FILE *file_tree = fopen(NAME_FILE, "w");
 
 // -------------------------------------BEGIN TREE FUNCTIONS--------------------------------------
 
@@ -143,7 +142,7 @@ void dtor_tree(Node *node) {
 
 Node *get_grammar(Tokenizer *tokens) {
 
-    Node *node = get_type(tokens);
+    Node *node = get_decl_func(tokens);
 
     assert(tokens->size == tokens->capacity);
     
@@ -152,31 +151,29 @@ Node *get_grammar(Tokenizer *tokens) {
     return node;
 }
 
-// Node *get_decl_func(Tokenizer *tokens) {
+Node *get_decl_func(Tokenizer *tokens) {
 
-//     Node *node = NULL;
+    Node *node = NULL;
 
-//     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) { 
-//         tokens->size++;
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) { 
 
-//         char *name_func = (char *) calloc(strlen(tokens->array[tokens->size].elem), sizeof(char));
-//         name_func = strcpy(name_func, tokens->array[tokens->size].elem);
-//         tokens->size++;
-//         assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
-//         // tokens->size++;        
-//         assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
-//         node = create_var_node(name_func, NULL, get_body(tokens));
-//     printf("\n");
-//           for (int i = tokens->size; i < tokens->capacity; i++) {
-//         printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-//     }
-//     printf("\n");
+        tokens->size++;
 
-//         free(name_func);
-//     }
+        char *name_func = (char *) calloc(strlen(tokens->array[tokens->size].elem), sizeof(char));
+        name_func = strcpy(name_func, tokens->array[tokens->size++].elem);
 
-//     return node;
-// }
+        assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
+        assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
+
+        
+        node = create_func_node(name_func, NULL, get_body(tokens));
+
+        free(name_func);
+        node = create_node(TP_OPERATOR, OP_DEC_FUNC, node, get_decl_func(tokens));
+    }
+
+    return node;
+}
 
 Node *get_type(Tokenizer *tokens) {
     
@@ -193,18 +190,16 @@ Node *get_type(Tokenizer *tokens) {
         node = get_condition(tokens);
         // условные операторы
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_WHILE)) {
-    node = get_cycle(tokens);
-    //циклы
+        node = get_cycle(tokens);
+        //циклы
     } else if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SCAN) || TOKEN_OP(OP_PRINT_VAR))) {
         node = get_in_out_put(tokens);
         // 
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_EXIT)) {
         node = get_exit(tokens);
+    } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_RET)) {
+        node = get_return(tokens);
     }
-    // else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) {
-        // printf("hhgfd");
-        // node = get_decl_func(tokens);
-    // }
     //  (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) {
 
     // }
@@ -221,6 +216,27 @@ Node *get_type(Tokenizer *tokens) {
 
     // assert(node_l && "null node in recursive despend get_type");
 
+    return node;
+}
+
+Node *get_return(Tokenizer *tokens) {
+    Node *node = NULL;
+
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_RET)) {
+        
+        tokens->size++;
+
+        if (TOKEN_TYPE(TP_VAR)) {
+            node = create_node(TP_OPERATOR, OP_RET, get_var(tokens), NULL);
+        } else if (TOKEN_TYPE(TP_NUMBER)) {
+            node = create_node(TP_OPERATOR, OP_RET, get_number(tokens), NULL);
+        }
+
+        assert(tokens->array[tokens->size++].oper == OP_END_LINE && "sintax error: you forgot ';' in oper RETURN");
+    
+    }
+
+    
     return node;
 }
 
@@ -525,11 +541,15 @@ Node *get_bracket(Tokenizer *tokens) {
 
 Node *get_number(Tokenizer *tokens) {
 
-    Node *node = CREATE_NUM(atoi(tokens->array[tokens->size].elem));
+    int num = 0;
+
+    sscanf(tokens->array[tokens->size].elem, "%d", &num);
+
+    Node *node = CREATE_NUM(num);
 
     tokens->size++;  
 
-    assert(node != NULL);
+    assert(node != NULL && "error in get_number");
 
     return node;
 }
@@ -564,6 +584,10 @@ void create_number_token(Tokenizer *tokens, char **text_buf, int ip) {
 
     tokens->array[ip].type = TP_NUMBER;
     char *point = tokens->array[ip].elem;
+    if (**text_buf == '-') {
+        *point++ = **text_buf;
+        (*text_buf)++;
+    }
 
     while ('0' <= **text_buf && **text_buf <= '9') {
         *point++ = **text_buf;
@@ -606,7 +630,7 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
 
     for (; i < size_buf && *text_buf != '\0'; i++) {
 
-        if ('0' <= *text_buf && *text_buf <= '9') {
+        if (('0' <= *text_buf && *text_buf <= '9') || (*text_buf == '-' && ('0' <= *(text_buf + 1) && *(text_buf + 1) <= '9'))) {
             
             tokens->array[i].elem = (char *) calloc(size_buf, sizeof(char));
             create_number_token(tokens, &text_buf, i);
@@ -644,49 +668,21 @@ void tokenizer_dtor(Tokenizer *tokens) {
 
 //--------------------------------------BEGIN TREE OUNPUT--------------------------------------------------------
 
-int checking_for_priority(Node *node, Node *parent) {
 
-    if (!node || !parent) return 0;
-
-    return (parent->type == TP_OPERATOR && node->type == TP_OPERATOR && 
-          ((parent->value.oper == OP_ADD || parent->value.oper == OP_SUB) ||
-           (node->value.oper == parent->value.oper) || 
-           (node->value.oper == OP_MUL && parent->value.oper == OP_DIV) ||
-           (parent->value.oper == OP_MUL && node->value.oper == OP_DIV)));
-
-}
-
-void print_tree(Node *node, Node *parent) {
-     
-    if (!node) return;     
-     
-    if (node->left && parent && !checking_for_priority(node, parent)) {     
-        fprintf(file_tree, "(");     
-    }     
-        
-    if (!(!node->left && node->right)) {     
-        print_tree(node->left, node);     
-    }     
-     
-    print_node(file_tree, node);     
-         
-    if (node->right) {     
-     
-        print_tree(node->right, node);
-        
-        if (!(!node->left && node->right) && parent && !checking_for_priority(node, parent)) {
-            fprintf(file_tree, ")");
-        }
-        
-    }
-    
-}
-
-#define DEF_OPER(operator, num, string, len, ...) \
-        case (operator): {                     \
-            fprintf(file, string);       \
-            break;                       \
-        }                                \
+#define DEF_OPER(operator, num, string, len, ...)                           \
+        case (operator): {                                                  \
+            fprintf(file, "label=\"");                                      \
+            fprintf(file, string);                                          \
+            fprintf(file, "\"");                                            \
+            if (operator == OP_CONNECT) {                                   \
+                fprintf(file, ", style=filled, fillcolor=\"#9acef0\"");     \
+            } else if (operator == OP_DEC_FUNC) {                           \
+                fprintf(file, ", style=filled, fillcolor=\"#3a5ed0\"");     \
+            }  else {                                                       \
+                fprintf(file, ", style=filled, fillcolor=\"#d3f0eb\"");     \
+            }                                                               \
+            break;                                                          \
+        }                                                                   \
 
 
 void print_node(FILE *file, Node *node) {
@@ -706,14 +702,14 @@ void print_node(FILE *file, Node *node) {
 
             break;
         } case TP_VAR: {
-            fprintf(file, "%s", node->value.var);
+            fprintf(file, "style=filled, fillcolor=\"#cbfcbd\", label=\"%s\"", node->value.var);
             break;
         } case TP_NUMBER: {
-            if (node->value.number < 0) {
-                fprintf(file, "(%d)", node->value.number);
-            } else {
-                fprintf(file, "%d", node->value.number);
-            } 
+            fprintf(file, "style=filled, fillcolor=\"#ffc0cb\", label=\"%d\"", node->value.number);
+
+            break;
+        } case TP_FUNC: {
+            fprintf(file, "style=filled, fillcolor=\"#6ba3f0\", label=\"%s\"", node->value.var);
             break;
         }
 
@@ -724,9 +720,6 @@ void print_node(FILE *file, Node *node) {
 
 #undef DEF_OPER
 
-void close_file() {
-    fclose(file_tree);
-}
 
 static int count_png = 0;
 
@@ -736,6 +729,7 @@ void dump_tree(Node *root) {
     FILE *dot_file = fopen(NAME_GRAPH_FILE, "w");
 
     fprintf(dot_file,"digraph {\n");
+    fprintf(dot_file,"\t	node [shape=Mrecord]\n");
     // printf("")
 
     graph_dump(dot_file, root, root->left);
@@ -761,13 +755,13 @@ void graph_dump(FILE *dot_file, Node *node, Node *node_son) {
         return;
     }
 
-    fprintf   (dot_file, "\tnode%p[label=\"", node);
+    fprintf   (dot_file, "\tnode%p[", node);
     print_node(dot_file, node);
-    fprintf   (dot_file, "\"]\n");
+    fprintf   (dot_file, "]\n");
 
-    fprintf   (dot_file, "\tnode%p[label=\"", node_son);
+    fprintf   (dot_file, "\tnode%p[", node_son);
     print_node(dot_file, node_son);
-    fprintf   (dot_file, "\"]\n");
+    fprintf   (dot_file, "]\n");
     
     fprintf(dot_file, "\tnode%p -> node%p\n", node, node_son);
 
@@ -852,7 +846,8 @@ Node *create_var_node(char *var, Node *node_left, Node *node_right) {
 }
 
 Node *create_func_node(char *name_func, Node *node_left, Node *node_right) {
-    Node *node = (Node *)calloc(1, sizeof(Node));
+
+    Node *node = (Node *) calloc(1, sizeof(Node));
 
     node->type = TP_FUNC;
     node->left = node_left;

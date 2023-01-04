@@ -70,6 +70,8 @@ Node *get_grammar(Tokenizer *tokens);
 
 Node *get_decl_func(Tokenizer *tokens);
 
+Node *get_return(Tokenizer *tokens);
+
 Node *get_exit(Tokenizer *tokens);
 
 Node *get_type(Tokenizer *tokens);
@@ -137,17 +139,11 @@ Node *tree_add_elem(Node *node, char *elem);
 
 //--------------------------------------BEGIN TREE OUNPUT FUNC--------------------------------------------------------
 
-int checking_for_priority(Node *node, Node *parent);
-
 void dump_tree(Node *root);
-
-void print_tree(Node *node, Node *parent);
 
 void print_node(FILE *file, Node *node);
 
 void graph_dump(FILE *dot_file, Node *node, Node *node_son);
-
-void close_file();
 
 //--------------------------------------END TREE OUNPUT FUNC----------------------------------------------------------
 
