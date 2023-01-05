@@ -1,12 +1,12 @@
 #include "../include/front_end.hpp"
 
 
-void printf_asm(const char *FILE_INPUT, Node *node, Variable_table *var_table) {
+void printf_asm(const char *FILE_INPUT, Node *node, Variable_table *name_table) {
     
     FILE *file = fopen(FILE_INPUT, "w");
 
-    print_asm_code(node->left, node, file, var_table);
-    print_asm_code(node->right, node, file, var_table);
+    print_asm_code(node->left, node, file, name_table);
+    print_asm_code(node->right, node, file, name_table);
 
     fprintf(file, "HLT\n");
     
@@ -18,20 +18,23 @@ static int count_if = 0;
 static int count_else = 0;
 static int count_while = 0;
 
-void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_table) {
+void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *name_table) {
 
     if (!node) return;
 
     if (parent->type == TP_OPERATOR && parent->left == node  && parent->value.oper == OP_WHILE) {
         count_while++;
         fprintf(file, "\nlable_while_beg_%d:\n\n", count_while);
+    } else if (parent->type == TP_OPERATOR && parent->left == node && parent->value.oper == OP_DEC_FUNC) {
+        fprintf(file, "func_%s:\n", node->value.var);
+
     }
 
-    print_asm_code(node->left, node, file, var_table);
+    print_asm_code(node->left, node, file, name_table);
 
-    print_asm_code(node->right, node, file, var_table);
+    print_asm_code(node->right, node, file, name_table);
 
-    print_asm_node(node, parent, file, var_table);
+    print_asm_node(node, parent, file, name_table);
     
 }
 
@@ -42,7 +45,7 @@ void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_ta
         break;                                      \
     }                                               \
 
-void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_table) {
+void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *name_table) {
     
  
     switch (node->type) {
@@ -55,12 +58,11 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
                 break;
             }
             break;
-
         case TP_VAR:
             if (!(parent->type == TP_OPERATOR && (parent->value.oper == OP_VAR || parent->value.oper == OP_EQU || parent->value.oper == OP_SCAN))) {
-                fprintf(file, "PUSH [%d]\n", find_var(var_table, node->value.var));
+                fprintf(file, "PUSH [%d]\n", find_name(name_table, node->value.var));
             } else if (parent->type == TP_OPERATOR && parent->right == node && (parent->value.oper == OP_VAR || parent->value.oper == OP_EQU)) {
-                fprintf(file, "PUSH [%d]\n", find_var(var_table, node->value.var));
+                fprintf(file, "PUSH [%d]\n", find_name(name_table, node->value.var));
             }
             break;
 
@@ -69,6 +71,9 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
             break;
 
         case TP_FUNC:
+            if (!(parent->type == TP_OPERATOR && parent->value.oper == OP_DEC_FUNC)){
+                fprintf(file, "CALL func_%s\n", node->value.var);
+            } 
             break;
     
         default:
@@ -93,21 +98,24 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_ta
 
 #undef DEF_OPER
 
-void ctor_var_table(Variable_table *var_table) {
+void ctor_var_func_table(Variable_table *name_table) {
     
-    var_table->arr = (Arr_var *)calloc(var_table->capacity, sizeof(Arr_var));
+    name_table->arr = (Arr_var *)calloc(name_table->capacity, sizeof(Arr_var));
 
-    var_table->size = 0;
+    name_table->size = 0;
 
 }
 
-int find_var(Variable_table *var_table, char *var) {
+int find_name(Variable_table *name_table, char *var) {
+    
     int id = -1;
-    for (int i = 0; i < var_table->size; i++) {
-        if (strcmp(var_table->arr[i].name_var, var) == 0) {
-            id = var_table->arr[i].id;
+    
+    for (int i = 0; i < name_table->size; i++) {
+        if (strcmp(name_table->arr[i].name_var, var) == 0) {
+            id = name_table->arr[i].id;
             break;
         }
     }
+
     return id;
 }

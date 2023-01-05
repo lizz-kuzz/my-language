@@ -1,8 +1,9 @@
 decl main() {
    var a = -3;
    var t = 6;
-   print_var(a);
    a = lol();
+   print_var(a);
+   exit;
 }
 
 decl lol() {

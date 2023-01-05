@@ -1,21 +1,135 @@
 
 stack_ctor_() at stack/stack.cpp(97)
-Stack[0x7ffc79f7e7b0] (ok) "stk" at main() at proc/main.cpp(9) 
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
   size = 0
   cappacity = 1
-  data [0x55d35a4eb490]
+  data [0x56082abf4490]
   {
       *[0] = 0
   }
 
 stack_ctor_() at stack/stack.cpp(97)
-Stack[0x7ffc79f7e720] (ok) "stk_ip" at run_program() at proc/processor.cpp(106) 
+Stack[0x7ffcdff6d620] (ok) "stk_ip" at run_program() at proc/processor.cpp(106) 
   size = 0
   cappacity = 4
-  data [0x55d35a4ec6f0]
+  data [0x56082abf56f0]
   {
       *[0] = 0
       *[1] = 0
       *[2] = 0
       *[3] = 0
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 1
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = -3
+  }
+
+stack_pop() at stack/stack.cpp(206)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 0
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = 0
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 1
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = 6
+  }
+
+stack_pop() at stack/stack.cpp(206)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 0
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = 0
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffcdff6d620] (ok) "stk_ip" at run_program() at proc/processor.cpp(106) 
+  size = 1
+  cappacity = 4
+  data [0x56082abf56f0]
+  {
+      *[0] = 10
+      *[1] = 0
+      *[2] = 0
+      *[3] = 0
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 1
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = -9
+  }
+
+stack_pop() at stack/stack.cpp(206)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 0
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = 0
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 1
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = -9
+  }
+
+stack_pop() at stack/stack.cpp(206)
+Stack[0x7ffcdff6d620] (ok) "stk_ip" at run_program() at proc/processor.cpp(106) 
+  size = 0
+  cappacity = 4
+  data [0x56082abf56f0]
+  {
+      *[0] = 0
+      *[1] = 0
+      *[2] = 0
+      *[3] = 0
+  }
+
+stack_pop() at stack/stack.cpp(206)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 0
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = 0
+  }
+
+stack_push() at stack/stack.cpp(137)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 1
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = -9
+  }
+
+stack_pop() at stack/stack.cpp(206)
+Stack[0x7ffcdff6d6b0] (ok) "stk" at main() at proc/main.cpp(9) 
+  size = 0
+  cappacity = 1
+  data [0x56082abf4490]
+  {
+      *[0] = 0
   }

@@ -55,7 +55,7 @@ void dtor_tree(Node *node) {
     dtor_tree(node->right);
     node->right = NULL;
     
-    if (node->type == TP_VAR) free(node->value.var);
+    if (node->type == TP_VAR || node->type == TP_FUNC) free(node->value.var);
     free(node);
 }
 
@@ -123,7 +123,7 @@ Node *create_var_node(char *var, Node *node_left, Node *node_right) {
     node->left = node_left;
     node->right = node_right;
 
-    node->value.var = (char *) calloc(strlen(var), sizeof(char));
+    node->value.var = (char *) calloc(strlen(var) + 1, sizeof(char));
     node->value.var = strcpy(node->value.var, var);
 
     return node;
@@ -137,7 +137,7 @@ Node *create_func_node(char *name_func, Node *node_left, Node *node_right) {
     node->left = node_left;
     node->right = node_right;
 
-    node->value.var = (char *) calloc(strlen(name_func), sizeof(char));
+    node->value.var = (char *) calloc(strlen(name_func) + 1, sizeof(char));
     node->value.var = strcpy(node->value.var, name_func);
 
     return node;
@@ -667,7 +667,7 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
 
     long long unsigned size_buf = strlen(text_buf);
 
-    tokens->array = (Token_elem *) calloc(size_buf, sizeof(Token_elem));
+    tokens->array = (Token_elem *) calloc(size_buf + 1, sizeof(Token_elem));
 
     unsigned i = 0;
 

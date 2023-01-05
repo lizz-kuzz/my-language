@@ -20,8 +20,8 @@ struct Variable_table {
     Arr_var *arr;
 };
 
-int  find_var(Variable_table *var_table, char *var);
-void ctor_var_table(Variable_table *var_table);
+int  find_name(Variable_table *var_table, char *var);
+void ctor_var_func_table(Variable_table *var_table);
 void printf_asm(const char *FILE_INPUT, Node *node, Variable_table *var_table);
 void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *var_table);
 void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *var_table);

@@ -1,0 +1,23 @@
+func_main:
+PUSH -3
+POP [0]
+PUSH 6
+POP [1]
+CALL func_lol
+POP [0]
+PUSH [0]
+OUT
+HLT
+
+
+
+
+
+func_lol:
+PUSH -9
+POP [2]
+PUSH [2]
+RET
+
+
+HLT
