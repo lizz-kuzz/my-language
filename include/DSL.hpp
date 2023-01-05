@@ -25,6 +25,8 @@
 
 #define SIN(node)             create_node(TP_OPERATOR, OP_SIN, NULL, node)
 
+#define SQR(node)              create_node(TP_OPERATOR, OP_SQR, NULL, node)
+
 
 #define dL diff_tree(node->left)
 #define dR diff_tree(node->right)

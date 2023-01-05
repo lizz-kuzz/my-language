@@ -1,23 +1,157 @@
 func_main:
-PUSH -3
+PUSH 0
 POP [0]
-PUSH 6
+PUSH 0
 POP [1]
-CALL func_lol
+PUSH 0
+POP [2]
+PUSH 0
+POP [3]
+PUSH 0
+POP [4]
+PUSH 0
+POP [5]
+IN
 POP [0]
+IN
+POP [1]
+IN
+POP [2]
 PUSH [0]
+PUSH 0
+JE lable_if_1
+CALL func_TwoRoots
+POP [4]
+PUSH [4]
 OUT
+PUSH [5]
+OUT
+
+
+JMP lable_else_0x55d105e08b90
+
+lable_if_1:
+CALL func_OneRoot
+POP [4]
+PUSH [4]
+OUT
+
+lable_else_0x55d105e08b90:
 HLT
 
 
 
 
 
-func_lol:
-PUSH -9
-POP [2]
+
+
+
+
+
+func_OneRoot:
+PUSH [1]
+PUSH 0
+JE lable_if_2
+PUSH -1
 PUSH [2]
+MUL
+PUSH [1]
+DIV
+POP [4]
+JMP lable_else_0x55d105e092a0
+
+lable_if_2:
+PUSH -12345678
+POP [6]
+PUSH [6]
+OUT
+HLT
+
+
+lable_else_0x55d105e092a0:
+PUSH [4]
 RET
 
+
+func_TwoRoots:
+PUSH [1]
+PUSH [1]
+MUL
+PUSH [0]
+PUSH [2]
+MUL
+PUSH 4
+MUL
+SUB
+POP [3]
+PUSH [3]
+PUSH 0
+JE lable_if_3
+PUSH [3]
+SQR
+POP [3]
+PUSH -1
+PUSH [1]
+MUL
+PUSH [3]
+SUB
+PUSH 2
+PUSH [0]
+MUL
+DIV
+POP [4]
+PUSH -1
+PUSH [1]
+MUL
+PUSH [3]
+ADD
+PUSH 2
+PUSH [0]
+MUL
+DIV
+POP [5]
+PUSH [4]
+RET
+
+
+
+
+JMP lable_else_0x55d105e0a6b0
+
+lable_if_3:
+PUSH 0
+POP [7]
+PUSH [7]
+PUSH [3]
+SUB
+POP [7]
+PUSH [7]
+PUSH 0
+JE lable_if_4
+PUSH -123456789
+POP [6]
+PUSH [6]
+OUT
+
+JMP lable_else_0x55d105e0a560
+
+lable_if_4:
+PUSH -1
+PUSH [1]
+MUL
+PUSH 2
+PUSH [0]
+MUL
+DIV
+POP [4]
+PUSH [4]
+OUT
+
+lable_else_0x55d105e0a560:
+HLT
+
+
+
+lable_else_0x55d105e0a6b0:
 
 HLT

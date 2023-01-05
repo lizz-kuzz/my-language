@@ -12,7 +12,7 @@
 #define SIGNATURE 'CP'
 #define VERSION 3
 
-#define LEN_ARR_LABLES 10
+#define LEN_ARR_LABLES 100
 #define MASK_CMD    0x1f
 #define BIT_CONST   5
 #define BIT_REG     6

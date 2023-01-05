@@ -67,8 +67,8 @@ DEF_OPER(OP_VAR, 9, "var", 3,
             {
             assert(find_name(name_table, node->left->value.var) == -1 && "you are initializing a variable that already exists");
             
-            name_table->arr[name_table->size].name_var = (char *) calloc(strlen(node->left->value.var) + 1, sizeof(char));
-            strcpy(name_table->arr[name_table->size].name_var, node->left->value.var);
+            name_table->arr[name_table->size].name = (char *) calloc(strlen(node->left->value.var) + 1, sizeof(char));
+            strcpy(name_table->arr[name_table->size].name, node->left->value.var);
             
             name_table->arr[name_table->size].id = name_table->size;
             
@@ -122,11 +122,11 @@ DEF_OPER(OP_WHILE, 20, "while", 5,
 
 DEF_OPER(OP_DEC_FUNC, 21, "decl", 4, 
             {
-                
+
             assert(find_name(name_table, node->left->value.var) == -1 && "you are initializing a variable that already exists");
             
-            name_table->arr[name_table->size].name_var = (char *) calloc(strlen(node->left->value.var) + 1, sizeof(char));
-            strcpy(name_table->arr[name_table->size].name_var, node->left->value.var);
+            name_table->arr[name_table->size].name = (char *) calloc(strlen(node->left->value.var) + 1, sizeof(char));
+            strcpy(name_table->arr[name_table->size].name, node->left->value.var);
             
             name_table->arr[name_table->size].id = -1;
             name_table->size++;        
@@ -160,7 +160,10 @@ DEF_OPER(OP_EXIT, 26, "exit", 4,
             fprintf(file, "HLT\n");
             })
 
-
+DEF_OPER(OP_SQR, 27, "sqr", 3, 
+            {
+            fprintf(file, "SQR\n");
+            })
 
 
 

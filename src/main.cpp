@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     printf_asm(FILE_ASM, tree.root_tree, &var_table);
 
     for (int i = 0; i < var_table.size; i++) {
-        printf("'%s' [%d]\n", var_table.arr[i].name_var, var_table.arr[i].id);
+        printf("'%s' [%d]\n", var_table.arr[i].name, var_table.arr[i].id);
     }
 
 

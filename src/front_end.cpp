@@ -111,7 +111,7 @@ int find_name(Variable_table *name_table, char *var) {
     int id = -1;
     
     for (int i = 0; i < name_table->size; i++) {
-        if (strcmp(name_table->arr[i].name_var, var) == 0) {
+        if (strcmp(name_table->arr[i].name, var) == 0) {
             id = name_table->arr[i].id;
             break;
         }

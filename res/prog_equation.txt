@@ -1,5 +1,4 @@
 decl main() {
-   
    var a = 0;
    var b = 0;
    var c = 0;
@@ -42,20 +41,22 @@ decl TwoRoots() {
    D = b * b - a * c * 4;
 
    if (D) {
-      D = 0 + sqr(D);
-      x1 = (-1 * b - D) / (2 * a);
-      x2 = (-1 * b + D) / (2 * a);
+      D = sqr(D);
+      x1 = ((-1) * b - D) / (2 * a);
+      x2 = ((-1) * b + D) / (2 * a);
       return x1;
    } else {
       var check = 0;
-      check = check -  D;
+      check -= D;
       if (check) {
          NotRoots = -123456789;
          print_var(NotRoots);     
+         exit;
       } else {
-         x1 = (-1 * b) / (2 * a);
+         x1 = (-1) * b / (2 * a);
          print_var(x1);
+         exit;
       }
-      exit;
    }
+
 }

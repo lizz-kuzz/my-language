@@ -365,7 +365,13 @@ Node *get_body(Tokenizer *tokens) {
 
         tokens->size++;
         node = get_type(tokens);
-   
+//     printf("\n");
+//     printf("\n");
+//     printf("\n");
+//    for (int i = tokens->size; i < tokens->capacity; i++) {
+//         printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+//     }
+//     printf("\n");
         assert(tokens->array[tokens->size].oper == OP_RIGHT_FIGURE_BRACKET && "sintax erorr: you forgot } in body");
         tokens->size++;
     }
@@ -383,6 +389,8 @@ Node *ger_var_declaration(Tokenizer *tokens) {
         
         tokens->size++;
         node_l = get_var(tokens);
+         
+    
         assert(tokens->array[tokens->size].oper == OP_EQU && "syntax erorr");
 
         if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_EQU)) {
@@ -509,21 +517,25 @@ Node *get_deg(Tokenizer *tokens) {
 
 Node *get_unary_op(Tokenizer *tokens) {
 
+            printf("dfghjhgfds\n\n");
     Node *node_r = get_bracket(tokens);
 
-    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_LN)) {
+    if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_LN) || TOKEN_OP(OP_COS) || TOKEN_OP(OP_SIN) || TOKEN_OP(OP_SQR))) {
 
         int op = tokens->array[tokens->size].oper;
         tokens->size++;        
 
         Node *node_l = get_bracket(tokens);
-        
+        printf("op %d\n\n", op);
         if (op == OP_LN) {
             node_r = LN(node_l);
         } else if (op == OP_SIN) {
             node_r = SIN(node_l);
         } else if (op == OP_COS) {
             node_r = COS(node_l);
+        } else if (op == OP_SQR) {
+            printf("dfghjhgfds\n\n");
+            node_r = SQR(node_l);
         }
     }
 
@@ -578,7 +590,13 @@ Node *get_func(Tokenizer *tokens) {
 
     node = create_func_node(tokens->array[tokens->size].elem, NULL, NULL);
     tokens->size++;  
-
+    printf("\n");
+    printf("\n");
+    printf("\n");
+   for (int i = tokens->size; i < tokens->capacity; i++) {
+        printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+    }
+    printf("\n");
     assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
     assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
 
@@ -666,7 +684,6 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf) {
     assert(text_buf != NULL && "null poiner text_buf");
 
     long long unsigned size_buf = strlen(text_buf);
-
     tokens->array = (Token_elem *) calloc(size_buf + 1, sizeof(Token_elem));
 
     unsigned i = 0;
