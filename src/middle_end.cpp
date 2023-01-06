@@ -17,8 +17,6 @@ void optimizer_tree(Node *node) {
         continue_optimizer = 0;
     }
 
-    dump_tree(node);
-
 }
 
 int collapsing_nodes(Node *node, int *continue_optimiz) {
@@ -37,7 +35,6 @@ int collapsing_nodes(Node *node, int *continue_optimiz) {
         if (node->left->type == TP_NUMBER && node->left->value.number == 0) {
             dtor_tree(node);
             node = NULL;
-            printf("fff\n");
             *continue_optimiz = 1;       
         }
     }
@@ -105,9 +102,11 @@ int folding_constant(Node *node, int *continue_optimiz) {
 }
 
 int pow(int x, int y) {
+
     while (y > 1) {
         x *= x;
         y--;
     }
+    
     return x;
 }

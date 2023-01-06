@@ -120,8 +120,6 @@ void tokenizer_ctor(Tokenizer *tokens, char *text_buf);
 
 void tokenizer_dtor(Tokenizer *tokens);
 
-int  is_oper(char symbol);
-
 // -------------------------------------END TOKENIZER FUNC---------------------------------------------------
 
 

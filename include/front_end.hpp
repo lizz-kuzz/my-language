@@ -21,9 +21,16 @@ struct Variable_table {
 };
 
 int  find_name(Variable_table *name_table, char *var);
+
 void ctor_var_func_table(Variable_table *name_table);
+
 void printf_asm(const char *FILE_INPUT, Node *node, Variable_table *name_table);
+
 void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *name_table);
+
 void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *name_table);
+
+void print_jump_lable(Node *node, Node *parent, FILE *file, Variable_table *name_table);
+
 
 #endif

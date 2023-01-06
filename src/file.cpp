@@ -36,7 +36,7 @@ char *read_file(const char *TEXT, char *text_buf) {
     fclose(file_input);
     text_buf = program_text_normalize(text_buf, SYMBOLS);
 
-    printf("%s\n", text_buf);
+    // printf("%s\n", text_buf);
 
     return text_buf;
 

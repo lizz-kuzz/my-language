@@ -1,6 +1,7 @@
 #include "debug.hpp"
 
 #if MODE == MODE_CANARY_ON || MODE == MODE_HASH_ON || MODE == MODE_HASH_CANARY_ON 
+
 void to_dump (stack *stk, FILE *log, const char *func, int line, const char *name_file) {
 
     assert(log != nullptr && "coudn't open file");
@@ -149,7 +150,6 @@ unsigned long long count_hash(void *data, size_t SIZE) {
     while (SIZE--)
     {
         hash += ((point[SIZE] << 5) + point[SIZE]);
-        // hash += point[SIZE];
 
     }
     return hash;

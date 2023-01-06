@@ -79,9 +79,16 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *name_t
             break;
     }
 
+    print_jump_lable(node, parent, file, name_table);
+    
+}
+
+#undef DEF_OPER
+
+void print_jump_lable(Node *node, Node *parent, FILE *file, Variable_table *name_table) {
+
     if (parent->type == TP_OPERATOR && parent->left == node) {
         if (parent->value.oper == OP_IF) {
-            // fprintf(file, "PUSH 0\n");
             count_if++;
             if (node->type == TP_OPERATOR && node->value.oper == OP_NOT_EQUALITY) {
                 fprintf(file, "JE lable_if_%d\n", count_if);
@@ -101,9 +108,6 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *name_t
             fprintf(file, "JMP lable_else_%p\n\n", parent);
             fprintf(file, "lable_if_%d:\n", count_if);
         } else if (parent->value.oper == OP_WHILE) {
-            // fprintf(file, "PUSH 0\n");
-            printf("sdfgfsdf\n\n");
-            // fprintf(file, "JE lable_while_end_%d\n", count_while);
             if (node->type == TP_OPERATOR && node->value.oper == OP_NOT_EQUALITY) {
                 fprintf(file, "JE lable_while_end_%d\n", count_while);
             } else if (node->type == TP_OPERATOR && node->value.oper == OP_EQUALITY) {
@@ -120,8 +124,6 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *name_t
         }
     } 
 }
-
-#undef DEF_OPER
 
 void ctor_var_func_table(Variable_table *name_table) {
     

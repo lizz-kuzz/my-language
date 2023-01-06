@@ -1,7 +1,7 @@
 #include "processor.hpp"
 
 int main() {
-    const char *FILE_ASS_OUTPUT = "res_cpu/asm.output";
+    const char *FILE_ASS_OUTPUT = "res/asm.output";
     
     prog program = {};
     stack stk = {};

@@ -15,16 +15,13 @@ int main(int argc, char *argv[]) {
     
     create_file_path(FILE_PROG, path, name_file);
  
-    // printf("%s", FILE_PROG);
-    const char *FILE_ASS_OUTPUT = "res_cpu/asm.output";
+    const char *FILE_ASS_OUTPUT = "res/asm.output";
 
     read_file(FILE_PROG, &program);
 
     if (compile(FILE_ASS_OUTPUT, &program) == 1) return 1;
     
     dtor(&program);
-    // system("./cpu.exe");
-    // printf("ffff");
-  
+
     return 0;
 }

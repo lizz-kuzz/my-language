@@ -23,13 +23,13 @@ int ctor_tree(const char *FILE_INPUT, Tree *tree) {
 
     tokenizer_ctor(&tokens, point_text_buf);
 
-    printf("%d\n", tokens.capacity);
+    // printf("%d\n", tokens.capacity);
 
-    for (int i = 0; i < tokens.capacity; i++) {
-        printf("%d [\"%s\"] {%d} ", tokens.array[i].type, tokens.array[i].elem, tokens.array[i].oper);
-    }
+    // for (int i = 0; i < tokens.capacity; i++) {
+    //     printf("%d [\"%s\"] {%d} ", tokens.array[i].type, tokens.array[i].elem, tokens.array[i].oper);
+    // }
 
-    printf("\n");
+    // printf("\n");
 
     tree->root_tree = (Node *) calloc(1, sizeof(Node));
 
@@ -66,11 +66,11 @@ Node *copy_tree(Node *node) {
 
     Node *copy_node = (Node *) calloc(1, sizeof(Node));
 
-    copy_node->left      = node->left;
-    copy_node->right     = node->right;
-    copy_node->value     = node->value;
-    copy_node->right     = node->right;
-    copy_node->type      = node->type;
+    copy_node->left   = node->left;
+    copy_node->right  = node->right;
+    copy_node->value  = node->value;
+    copy_node->right  = node->right;
+    copy_node->type   = node->type;
 
     if (node->left) {
         copy_node->left = copy_tree(copy_node->left);
@@ -182,14 +182,13 @@ Node *get_decl_func(Tokenizer *tokens) {
 Node *get_type(Tokenizer *tokens) {
     
     Node *node = NULL;
-    // Node *node_l = NULL; 
 
     if (TOKEN_TYPE(TP_VAR) || ((TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))))) {
         node = get_assignment(tokens);
-                // присваивание 
+        // присваивание 
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_VAR)) {
         node = ger_var_declaration(tokens);
-                // декларация переменных 
+        // декларация переменных 
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_IF)) {
         node = get_condition(tokens);
         // условные операторы
@@ -198,32 +197,18 @@ Node *get_type(Tokenizer *tokens) {
         //циклы
     } else if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SCAN) || TOKEN_OP(OP_PRINT_VAR))) {
         node = get_in_out_put(tokens);
-        // 
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_EXIT)) {
         node = get_exit(tokens);
     } else if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_RET)) {
         node = get_return(tokens);
     }
-    //  (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_DEC_FUNC)) {
 
-    // }
-    // for (int i = tokens->size; i < tokens->capacity; i++) {
-    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-    // }
-    // printf("\n");
-
-    // node_l = create_node(TP_OPERATOR, OP_CONNECT, node_l, node);
-
-    // dump_tree(node);
-// декларация функций
-    
-
-    // assert(node_l && "null node in recursive despend get_type");
 
     return node;
 }
 
 Node *get_return(Tokenizer *tokens) {
+
     Node *node = NULL;
 
     if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP(OP_RET)) {
@@ -245,6 +230,7 @@ Node *get_return(Tokenizer *tokens) {
 }
 
 Node *get_exit(Tokenizer *tokens) {
+
     Node *node = NULL;
     Node *node_l = NULL;
 
@@ -386,13 +372,7 @@ Node *get_body(Tokenizer *tokens) {
 
         tokens->size++;
         node = get_type(tokens);
-//     printf("\n");
-//     printf("\n");
-//     printf("\n");
-//    for (int i = tokens->size; i < tokens->capacity; i++) {
-//         printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-//     }
-//     printf("\n");
+
         assert(tokens->array[tokens->size].oper == OP_RIGHT_FIGURE_BRACKET && "sintax erorr: you forgot } in body");
         tokens->size++;
     }
@@ -437,8 +417,6 @@ Node *get_assignment(Tokenizer *tokens) {
     Node *node_r = get_var(tokens);
     Node *node = NULL;
     Node *node_l = NULL;
-
-
 
     if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_SUB_EQU) || TOKEN_OP(OP_ADD_EQU) || TOKEN_OP(OP_EQU))) {
         
@@ -541,15 +519,9 @@ Node *get_unary_op(Tokenizer *tokens) {
 
         int op = tokens->array[tokens->size].oper;
         tokens->size++;        
-//     printf("\n");
-//     printf("\n");
-//     printf("\n");
-//    for (int i = tokens->size; i < tokens->capacity; i++) {
-//         printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-//     }
-//     printf("\n");
+
         Node *node_l = get_bracket(tokens);
-        printf("op %d\n\n", op);
+
         if (op == OP_LN) {
             node_r = LN(node_l);
         } else if (op == OP_SIN) {
@@ -557,7 +529,6 @@ Node *get_unary_op(Tokenizer *tokens) {
         } else if (op == OP_COS) {
             node_r = COS(node_l);
         } else if (op == OP_SQR) {
-            printf("dfghjhgfds\n\n");
             node_r = SQR(node_l);
         }
     }
@@ -609,23 +580,15 @@ Node *get_number(Tokenizer *tokens) {
 }
 
 Node *get_func(Tokenizer *tokens) {
+
     Node *node = NULL;
 
     node = create_func_node(tokens->array[tokens->size].elem, NULL, NULL);
     tokens->size++;  
 
-    assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
+    assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET  && "sintax error: you forgot left bracket in declaration function");
     assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
 
-    // printf("\n\n");
-
-    // for (int i = tokens->size; i < tokens->capacity; i++) {
-    //     printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-    // }
-
-    // printf("\n");
- 
-          
     assert(node != NULL);
     return node;
 
@@ -650,12 +613,6 @@ Node *get_var(Tokenizer *tokens) {
 
 // -------------------------------------BEGIN TOKENIZER---------------------------------------------------
 
-int is_oper(char symbol) {
-
-    return (symbol == OP_ADD || symbol == OP_SUB || symbol == OP_DIV 
-         || symbol == OP_DEG || symbol == OP_LN  || symbol == OP_MUL);
-
-}
 
 void create_number_token(Tokenizer *tokens, char **text_buf, int ip) {
 
@@ -813,7 +770,6 @@ void dump_tree(Node *root) {
 
     fprintf(dot_file,"digraph {\n");
     fprintf(dot_file,"\t	node [shape=Mrecord]\n");
-    // printf("")
 
     graph_dump(dot_file, root, root->left);
     graph_dump(dot_file, root, root->right);

@@ -32,8 +32,7 @@ void fill_data(stack *stk) {
 #endif
 static void open_file() {
 
-    const char *LOG_FILE = "res_cpu/log.txt";
-    // const char *LOG_FILE = "C://Users//User//Desktop//programs//stack//log.txt";
+    const char *LOG_FILE = "res/log.txt";
     
     if (file_status == FILE_CLOSE) {
         logs_ = fopen(LOG_FILE, "w");

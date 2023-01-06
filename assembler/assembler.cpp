@@ -226,7 +226,7 @@ int compile(const char *file, prog *program) {
 void printf_listing(prog *text_program, int count_cmd) {
     assert(text_program != nullptr && "null pointer");
 
-    const char *FILE_LISTING = "res_cpu/listing.txt"; 
+    const char *FILE_LISTING = "res/listing.txt"; 
 
     FILE *fp = fopen(FILE_LISTING, "w");
     assert(fp != nullptr && "coudn't open file");
