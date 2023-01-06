@@ -1,4 +1,5 @@
 decl main() {
+   
    var a = 0;
    var b = 0;
    var c = 0;
@@ -11,7 +12,7 @@ decl main() {
    scan(b);
    scan(c);
 
-   if (a) {
+   if (a != 0) {
       x1 = TwoRoots();
       print_var(x1);
       print_var(x2);
@@ -25,7 +26,7 @@ decl main() {
 
 decl OneRoot() {
 
-   if (b) {
+   if (b != 0) {
       x1 =  -1 * c / b;
    } else {
       var NotRoots = -12345678;
@@ -40,23 +41,19 @@ decl TwoRoots() {
 
    D = b * b - a * c * 4;
 
-   if (D) {
+   if (D == 0) {
+      x1 = (-1 * b) / (2 * a);
+      print_var(x1);
+      exit;
+   } else if (D > 0) {
       D = sqr(D);
-      x1 = ((-1) * b - D) / (2 * a);
-      x2 = ((-1) * b + D) / (2 * a);
+      x1 = (-1 * b - D) / (2 * a);
+      x2 = (-1 * b + D) / (2 * a);
       return x1;
    } else {
-      var check = 0;
-      check -= D;
-      if (check) {
-         NotRoots = -123456789;
-         print_var(NotRoots);     
-         exit;
-      } else {
-         x1 = (-1) * b / (2 * a);
-         print_var(x1);
-         exit;
-      }
+      NotRoots = -123456789;
+      print_var(NotRoots);     
+      exit;
    }
-
+   
 }

@@ -3,6 +3,25 @@ DEF_OPER(OP_CONNECT, 0, "CN", 1,
             fprintf(file, "\n");
             })
 
+DEF_OPER(OP_COMP_LESS_EQU, 32, "<=", 2, 
+            {
+                
+            })
+DEF_OPER(OP_COMP_MORE_EQU, 33, ">=", 2, 
+            {
+                
+            })
+
+DEF_OPER(OP_EQUALITY, 28, "==", 2, 
+            {
+
+            })
+
+DEF_OPER(OP_NOT_EQUALITY, 29, "!=", 2, 
+            {
+                
+            })
+
 DEF_OPER(OP_SUB_EQU, 11, "-=", 2,
             {
             fprintf(file, "POP ax\n");
@@ -167,5 +186,15 @@ DEF_OPER(OP_SQR, 27, "sqr", 3,
 
 
 
+DEF_OPER(OP_COMP_MORE, 30, ">", 1, 
+            {
+                
+            })
+            
+            
+DEF_OPER(OP_COMP_LESS, 31, "<", 1, 
+            {
+                
+            })
 
-
+            

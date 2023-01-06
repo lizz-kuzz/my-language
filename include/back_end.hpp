@@ -82,6 +82,8 @@ Node *get_in_out_put(Tokenizer *tokens);
 
 Node *get_condition(Tokenizer *tokens);
 
+Node *get_conditional_oper(Tokenizer *tokens);
+
 Node *get_body(Tokenizer *tokens);
 
 Node *ger_var_declaration(Tokenizer *tokens);

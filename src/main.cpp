@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {
     Variable_table var_table = {};
 
     var_table.capacity = ctor_tree(FILE_INPUT, &tree);
-    dump_tree(tree.root_tree);
     optimizer_tree(tree.root_tree);
+    dump_tree(tree.root_tree);
     ctor_var_func_table(&var_table);
     printf_asm(FILE_ASM, tree.root_tree, &var_table);
 

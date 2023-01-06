@@ -1,61 +1,25 @@
 decl main() {
-   
-   var a = 0;
-   var b = 0;
-   var c = 0;
+   var number = 0;
+   scan(number);
 
-   var D = 0;
-   var x1 = 0;
-   var x2 = 0;
+   number = fact();
 
-   scan(a);
-   scan(b);
-   scan(c);
-
-   if (a) {
-      x1 = TwoRoots();
-      print_var(x1);
-      print_var(x2);
-   } else {
-      x1 = OneRoot();
-      print_var(x1);
-   }
-
+   print_var(number);
    exit;
+   
 }
 
-decl OneRoot() {
+decl fact() {
 
-   if (b) {
-      x1 =  -1 * c / b;
-   } else {
-      var NotRoots = -12345678;
-      print_var(NotRoots);
-      exit;
-   }
+   var i = number;
 
-   return x1;
-}
+   while (i > 1) {
+      i -= 1;
 
-decl TwoRoots() {
-
-   D = b * b - a * c * 4;
-
-   if (D) {
-      D = 0 + sqr(D);
-      x1 = (-1 * b - D) / (2 * a);
-      x2 = (-1 * b + D) / (2 * a);
-      return x1;
-   } else {
-      var check = 0;
-      check = check -  D;
-      if (check) {
-         NotRoots = -123456789;
-         print_var(NotRoots);     
-      } else {
-         x1 = (-1 * b) / (2 * a);
-         print_var(x1);
+      if (i > 1) {
+         number = number * i;
       }
-      exit;
    }
+
+   return number;
 }

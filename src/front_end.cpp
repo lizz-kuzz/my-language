@@ -15,7 +15,6 @@ void printf_asm(const char *FILE_INPUT, Node *node, Variable_table *name_table) 
 }
 
 static int count_if = 0;
-static int count_else = 0;
 static int count_while = 0;
 
 void print_asm_code(Node *node, Node *parent, FILE *file, Variable_table *name_table) {
@@ -82,16 +81,42 @@ void print_asm_node(Node *node, Node *parent, FILE *file, Variable_table *name_t
 
     if (parent->type == TP_OPERATOR && parent->left == node) {
         if (parent->value.oper == OP_IF) {
-            fprintf(file, "PUSH 0\n");
+            // fprintf(file, "PUSH 0\n");
             count_if++;
-            fprintf(file, "JE lable_if_%d\n", count_if);
+            if (node->type == TP_OPERATOR && node->value.oper == OP_NOT_EQUALITY) {
+                fprintf(file, "JE lable_if_%d\n", count_if);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_EQUALITY) {
+                fprintf(file, "JNE lable_if_%d\n", count_if);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_LESS) {
+                fprintf(file, "JA lable_if_%d\n", count_if);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_MORE) {
+                fprintf(file, "JB lable_if_%d\n", count_if);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_MORE_EQU) {
+                fprintf(file, "JAE lable_if_%d\n", count_if);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_LESS_EQU) {
+                fprintf(file, "JBE lable_if_%d\n", count_if);
+            }
+
         } else if (parent->value.oper == OP_ELSE) {
             fprintf(file, "JMP lable_else_%p\n\n", parent);
             fprintf(file, "lable_if_%d:\n", count_if);
         } else if (parent->value.oper == OP_WHILE) {
-            fprintf(file, "PUSH 0\n");
-            fprintf(file, "JE lable_while_end_%d\n", count_while);
-            // fprintf(file, "lable_while_beg_%d:\n", count_while);
+            // fprintf(file, "PUSH 0\n");
+            printf("sdfgfsdf\n\n");
+            // fprintf(file, "JE lable_while_end_%d\n", count_while);
+            if (node->type == TP_OPERATOR && node->value.oper == OP_NOT_EQUALITY) {
+                fprintf(file, "JE lable_while_end_%d\n", count_while);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_EQUALITY) {
+                fprintf(file, "JNE lable_while_end_%d\n", count_while);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_LESS) {
+                fprintf(file, "JA lable_while_end_%d\n", count_while);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_MORE) {
+                fprintf(file, "JB lable_while_end_%d\n", count_while);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_MORE_EQU) {
+                fprintf(file, "JAE lable_while_end_%d\n", count_while);
+            } else if (node->type == TP_OPERATOR && node->value.oper == OP_COMP_LESS_EQU) {
+                fprintf(file, "JBE lable_while_end_%d\n", count_while);
+            }
         }
     } 
 }

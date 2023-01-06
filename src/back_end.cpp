@@ -300,7 +300,7 @@ Node *get_cycle(Tokenizer *tokens) {
         tokens->size++;
         assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper WHILE");
         
-        node_l = get_add_sub(tokens);
+        node_l = get_conditional_oper(tokens);
 
         assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper WHILE");
        
@@ -327,7 +327,7 @@ Node *get_condition(Tokenizer *tokens) {
 
         tokens->size++;
         assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in oper IF");
-        node_l = get_add_sub(tokens);
+        node_l = get_conditional_oper(tokens);
 
         assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in oper IF");
         
@@ -356,6 +356,27 @@ Node *get_condition(Tokenizer *tokens) {
 
     return node;
 }
+
+
+Node *get_conditional_oper(Tokenizer *tokens) {
+    
+    Node *node = get_var(tokens);;
+
+    if (TOKEN_TYPE(TP_OPERATOR) && TOKEN_OP_COND) {
+        int op = tokens->array[tokens->size].oper;
+        tokens->size++;
+
+        if (TOKEN_TYPE(TP_VAR)) {
+            node = create_node(TP_OPERATOR, op, node, get_var(tokens));
+        } else if (TOKEN_TYPE(TP_NUMBER)) {
+            node = create_node(TP_OPERATOR, op, node, get_number(tokens));
+        }
+    }
+
+    return node;
+}
+
+
 
 Node *get_body(Tokenizer *tokens) {
 
@@ -426,16 +447,13 @@ Node *get_assignment(Tokenizer *tokens) {
 
 
         tokens->size++;
-        if (tokens->array[tokens->size].oper == OP_LEFT_BRACKET) {
-            tokens->size--;
+        if (tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && tokens->array[tokens->size].oper == OP_RIGHT_BRACKET) {
+            tokens->size -= 2;
             node_l = get_func(tokens);
 
         } else {
-
-            tokens->size--;
+            tokens->size -= 2;
             node_l = get_add_sub(tokens);
-
-
         }
         
         node_r = create_node(TP_OPERATOR, op, node_r, node_l);
@@ -517,14 +535,19 @@ Node *get_deg(Tokenizer *tokens) {
 
 Node *get_unary_op(Tokenizer *tokens) {
 
-            printf("dfghjhgfds\n\n");
     Node *node_r = get_bracket(tokens);
 
     if (TOKEN_TYPE(TP_OPERATOR) && (TOKEN_OP(OP_LN) || TOKEN_OP(OP_COS) || TOKEN_OP(OP_SIN) || TOKEN_OP(OP_SQR))) {
 
         int op = tokens->array[tokens->size].oper;
         tokens->size++;        
-
+//     printf("\n");
+//     printf("\n");
+//     printf("\n");
+//    for (int i = tokens->size; i < tokens->capacity; i++) {
+//         printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
+//     }
+//     printf("\n");
         Node *node_l = get_bracket(tokens);
         printf("op %d\n\n", op);
         if (op == OP_LN) {
@@ -590,13 +613,7 @@ Node *get_func(Tokenizer *tokens) {
 
     node = create_func_node(tokens->array[tokens->size].elem, NULL, NULL);
     tokens->size++;  
-    printf("\n");
-    printf("\n");
-    printf("\n");
-   for (int i = tokens->size; i < tokens->capacity; i++) {
-        printf("%d [\"%s\"] {%d} ", tokens->array[i].type, tokens->array[i].elem, tokens->array[i].oper);
-    }
-    printf("\n");
+
     assert(tokens->array[tokens->size++].oper == OP_LEFT_BRACKET && "sintax error: you forgot left bracket in declaration function");
     assert(tokens->array[tokens->size++].oper == OP_RIGHT_BRACKET && "sintax error: you forgot right bracket in declaration function");
 
@@ -731,9 +748,15 @@ void tokenizer_dtor(Tokenizer *tokens) {
 
 #define DEF_OPER(operator, num, string, len, ...)                           \
         case (operator): {                                                  \
-            fprintf(file, "label=\"");                                      \
-            fprintf(file, string);                                          \
-            fprintf(file, "\"");                                            \
+            if (IS_NODE_OP(OP_COMP_LESS) || IS_NODE_OP(OP_COMP_MORE) || IS_NODE_OP(OP_COMP_LESS_EQU) || IS_NODE_OP(OP_COMP_MORE_EQU)) {  \
+                fprintf(file, "label=\"\\");                                \
+                fprintf(file, string);                                      \
+                fprintf(file, "\"");                                        \
+            } else {                                                        \
+                fprintf(file, "label=\"");                                  \
+                fprintf(file, string);                                      \
+                fprintf(file, "\"");                                        \
+            }                                                               \
             if (operator == OP_CONNECT) {                                   \
                 fprintf(file, ", style=filled, fillcolor=\"#9acef0\"");     \
             } else if (operator == OP_DEC_FUNC) {                           \

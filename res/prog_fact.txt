@@ -13,10 +13,10 @@ decl fact() {
 
    var i = number;
 
-   while (i) {
+   while (i > 1) {
       i -= 1;
 
-      if (i) {
+      if (i > 1) {
          number = number * i;
       }
    }

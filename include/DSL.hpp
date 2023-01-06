@@ -9,7 +9,7 @@
 
 #define ADD(node_l, node_r)   create_node(TP_OPERATOR, OP_ADD, node_l, node_r)
 
-#define CN(node_l, node_r)   create_node(TP_OPERATOR, OP_CONNECT, node_l, node_r)
+#define CN(node_l, node_r)    create_node(TP_OPERATOR, OP_CONNECT, node_l, node_r)
 
 #define SUB(node_l, node_r)   create_node(TP_OPERATOR, OP_SUB, node_l, node_r)
 
@@ -25,8 +25,9 @@
 
 #define SIN(node)             create_node(TP_OPERATOR, OP_SIN, NULL, node)
 
-#define SQR(node)              create_node(TP_OPERATOR, OP_SQR, NULL, node)
+#define SQR(node)             create_node(TP_OPERATOR, OP_SQR, NULL, node)
 
+#define TOKEN_OP_COND        (TOKEN_OP(OP_EQUALITY) || TOKEN_OP(OP_NOT_EQUALITY) || TOKEN_OP(OP_COMP_LESS) || TOKEN_OP(OP_COMP_MORE) || TOKEN_OP(OP_COMP_LESS_EQU) || TOKEN_OP(OP_COMP_MORE_EQU))
 
 #define dL diff_tree(node->left)
 #define dR diff_tree(node->right)
